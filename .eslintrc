@@ -1,0 +1,11 @@
+{
+   "parser": "babel-eslint",
+   "extends": [
+    "prettier",
+    "prettier/flowtype",
+    "prettier/react",
+    "prettier/standard"
+   ],
+   "rules": {
+    }
+}
