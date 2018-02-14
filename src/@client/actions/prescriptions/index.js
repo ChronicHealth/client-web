@@ -10,5 +10,6 @@ const base = baseActions('prescriptions', entity, service);
 
 module.exports = {
   ...base,
-  goToPrescription: id => push(`/prescriptions/${id}`)
+  goToPrescription: id => push(`/prescriptions/${id}`),
+  goToEditPrescription: id => push(`/prescriptions/${id}/edit`)
 };

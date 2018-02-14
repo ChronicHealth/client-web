@@ -5,14 +5,15 @@ import { startCase, toLower } from 'lodash';
 
 type $props = Object;
 
-export default (props: Object) => (Comp: React.ComponentType<any>) => {
+export default (properties: Object) => {
   const last = {};
   const getFields = (
     values,
     errors,
     touched,
     setFieldValue,
-    setFieldTouched
+    setFieldTouched,
+    handleChange
   ) => {
     if (
       last.values !== values ||
@@ -23,14 +24,13 @@ export default (props: Object) => (Comp: React.ComponentType<any>) => {
       last.errors = errors;
       last.touched = touched;
       last.result = Object.keys(values).reduce((finalResult, key) => {
+        const onChange = value => setFieldValue(key, value, true);
         finalResult[key] = {
           name: key,
           label: startCase(toLower(key)),
           value: values[key],
           error: touched[key] ? errors[key] : '',
-          onChange: value => {
-            return setFieldValue(key, value, true);
-          },
+          onChange: handleChange ? handleChange(key, onChange) : onChange,
           onBlur: () => setFieldTouched(key, true)
         };
         return finalResult;
@@ -38,29 +38,32 @@ export default (props: Object) => (Comp: React.ComponentType<any>) => {
     }
     return last.result;
   };
-  class Form extends React.Component<$props> {
-    render() {
-      const {
-        values,
-        errors,
-        touched,
-        setFieldValue,
-        setFieldTouched,
-        ...props
-      } = this.props;
-      return (
-        <Comp
-          fields={getFields(
-            values,
-            errors,
-            touched,
-            setFieldValue,
-            setFieldTouched
-          )}
-          {...props}
-        />
-      );
+  return (Comp: React.ComponentType<any>) => {
+    class Form extends React.Component<$props> {
+      render() {
+        const {
+          values,
+          errors,
+          touched,
+          setFieldValue,
+          setFieldTouched,
+          ...props
+        } = this.props;
+        return (
+          <Comp
+            fields={getFields(
+              values,
+              errors,
+              touched,
+              setFieldValue,
+              setFieldTouched,
+              properties.handleChange(props)
+            )}
+            {...props}
+          />
+        );
+      }
     }
-  }
-  return withFormik(props)(Form);
+    return withFormik(properties)(Form);
+  };
 };

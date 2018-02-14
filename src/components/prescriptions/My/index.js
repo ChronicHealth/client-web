@@ -4,7 +4,7 @@ import { UL, ULItem } from 'ui-kit';
 import { flowRight } from 'lodash';
 import { push } from '@client/actions/router';
 import { connect } from 'react-redux';
-import { getPrescriptions } from '@client/actions/pages/prescriptions';
+import { getPrescriptions } from '@client/actions/pages/myPrescriptions';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import * as pagePrescriptionSelectors from '@client/selectors/pages/prescriptions';
@@ -12,7 +12,7 @@ import PrescriptionItem from '../Item';
 
 type $props = Object;
 
-export class ShowAllPrescriptions extends React.PureComponent<$props> {
+export class MyPrescriptions extends React.PureComponent<$props> {
   componentWillMount() {
     this.props.getPrescriptions();
   }
@@ -49,5 +49,5 @@ export const mapStateToProps = createStructuredSelector({
   prescriptionIds: pagePrescriptionSelectors.getRelated('prescriptions')
 });
 export default flowRight([connect(mapStateToProps, mapDispatchToProps)])(
-  ShowAllPrescriptions
+  MyPrescriptions
 );

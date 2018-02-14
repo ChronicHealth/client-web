@@ -1,15 +1,9 @@
 // @flow
 import React from 'react';
-import khange, { kheck } from 'khange';
-import { connect } from 'react-redux';
 import { flowRight } from 'lodash';
-import { createStructuredSelector } from 'reselect';
-import { getParam } from '@client/selectors/router';
-import * as prescriptionSelectors from '@client/selectors/prescriptions';
 import ULItem from 'ui-kit/UL/Item';
 import UL from 'ui-kit/UL';
-import { get } from '@client/actions/prescriptions';
-import { bindActionCreators } from 'redux';
+import get from '../get';
 
 type $props = Object;
 
@@ -60,27 +54,4 @@ export class ShowPrescription extends React.PureComponent<$props> {
   }
 }
 
-const getPrescriptionId = getParam('prescriptionId');
-
-export const mapStateToProps = createStructuredSelector({
-  id: getPrescriptionId,
-  prescription: prescriptionSelectors.find(getPrescriptionId)
-});
-
-// $FlowFixMe
-export const mapDispatchToProps = (dispatch: $$dispatch) =>
-  bindActionCreators(
-    {
-      get
-    },
-    dispatch
-  );
-
-export const onKhange = (props: $props) => {
-  props.get(props.id);
-};
-
-export default flowRight([
-  connect(mapStateToProps, mapDispatchToProps),
-  khange(kheck('id'), onKhange)
-])(ShowPrescription);
+export default flowRight([get])(ShowPrescription);

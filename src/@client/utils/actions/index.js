@@ -44,7 +44,7 @@ export const baseActions = (name: string, reducer: Object, service: Object) => {
       });
     },
     update: (id: $$id, values: Object) => (dispatch: $$dispatch) => {
-      return service.update(id).then(() => {
+      return service.update(id, values).then(() => {
         dispatch(
           reducer.update({
             id,

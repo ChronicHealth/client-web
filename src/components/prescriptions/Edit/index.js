@@ -8,37 +8,32 @@ import { Button } from 'ui-kit';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  create as createPrescription,
+  update as updatePrescription,
   goToPrescription
 } from '@client/actions/prescriptions';
 import uuid from 'uuid/v1';
 import PrescriptionForm from '../Form';
+import { createStructuredSelector } from 'reselect';
+import getPrescription from '../get';
 
 type $props = Object;
 
-export class CreatePrescription extends React.PureComponent<$props> {
+export class EditPrescription extends React.PureComponent<$props> {
   render() {
     const { props } = this;
     return (
       <div>
-        <h1>Create Prescription</h1>
+        <h1>{props.prescription.name}</h1>
         <PrescriptionForm fields={this.props.fields} />
-        <Button
-          primary
-          disabled={!props.isValid}
-          onClick={this.props.handleSubmit}
-        >
-          Create
-        </Button>
       </div>
     );
   }
 }
 // $FlowFixMe
-export const mapDispatchToProps = (dispatch: $$dispatch) =>
+export const mapDispatchToProps = (dispatch: $$dispatch, { id }) =>
   bindActionCreators(
     {
-      createPrescription,
+      updatePrescription: values => updatePrescription(id, values),
       goToPrescription
     },
     dispatch
@@ -49,15 +44,17 @@ const array = Yup.array()
   .required();
 
 export default flowRight([
+  getPrescription,
   connect(null, mapDispatchToProps),
   form({
-    mapPropsToValues: () => ({
-      name: '',
-      purpose: [],
-      notes: '',
-      instructives: '',
-      scope: '',
-      refs: []
+    enableReinitialize: true,
+    mapPropsToValues: ({ prescription }) => ({
+      name: prescription.name,
+      purpose: prescription.purpose,
+      notes: prescription.notes,
+      instructives: prescription.instructives,
+      scope: prescription.scope,
+      refs: prescription.refs
     }),
     validationSchema: Yup.object().shape({
       name: Yup.string().required(),
@@ -67,10 +64,18 @@ export default flowRight([
       scope: Yup.string().required(),
       refs: array
     }),
+    handleChange: props => {
+      return (key, onChange) => {
+        return value => {
+          onChange(value);
+          return props.updatePrescription({ [key]: value });
+        };
+      };
+    },
     handleSubmit: (values, { props }) => {
       const id = uuid();
       props.goToPrescription(id);
       return props.createPrescription({ ...values, id });
     }
   })
-])(CreatePrescription);
+])(EditPrescription);

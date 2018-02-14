@@ -15,12 +15,12 @@ const splitReducers = allReducers => {
       finalResult.entities[reducerName] = allReducers[reducerName].entity;
       finalResult.relationships[reducerName] =
         allReducers[reducerName].relationship;
-      // $FlowFixMe
       finalResult.initialState.entities[reducerName] = new Map(
+        // $FlowFixMe
         allReducers[reducerName].initialState.entity
       );
-      // $FlowFixMe
       finalResult.initialState.relationships[reducerName] = new Map(
+        // $FlowFixMe
         allReducers[reducerName].initialState.relationship
       );
       return finalResult;

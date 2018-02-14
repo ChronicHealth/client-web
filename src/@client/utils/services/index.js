@@ -59,7 +59,7 @@ function processUrl(url) {
   return `/${url}`;
 }
 
-export const baseServices = (thisPrefix: string, host: string) => {
+export const baseServices = (thisPrefix: string, host?: string) => {
   const thisHost = `${host ||
     process.env.API_CONNECTION ||
     'https://beaprogrammer.org/api'}/`;

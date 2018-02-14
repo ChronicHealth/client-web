@@ -25,6 +25,11 @@ export class Nav extends React.PureComponent<$props> {
               icon="account_circle"
               caption={props.currentUser.username}
             />
+            <MenuItem
+              value="user"
+              onClick={() => props.goToMyPrescriptions()}
+              caption="Prescriptions"
+            />
             <MenuDivider />
             <MenuItem
               value="signout"
@@ -56,6 +61,7 @@ export const mapDispatchToProps = (dispatch: $$dispatch) => ({
   goToSignup: () => dispatch(routerActions.push('/signup')),
   goToLogin: () => dispatch(routerActions.push('/login')),
   goToUser: (id: $$id) => dispatch(goToUser(id)),
+  goToMyPrescriptions: () => dispatch(routerActions.push('/prescriptions/my')),
   logout: () => {
     dispatch(logout()), dispatch(routerActions.push('/'));
   }

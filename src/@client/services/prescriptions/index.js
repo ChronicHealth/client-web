@@ -1,6 +1,9 @@
 // @flow
 import { baseServices } from '@client/utils/services';
 
+const base = baseServices('prescriptions');
+
 module.exports = {
-  ...baseServices('prescriptions')
+  ...base,
+  my: () => base.get('my')
 };

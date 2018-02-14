@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 import { ConnectedRouter } from 'react-router-redux';
 import { Provider } from 'react-redux';
 import Layout from 'components/Layout';
-import store, {history} from './configureStore'
-import { Route } from 'react-router'
-import 'ui-kit/materialDesignIcons.css'
+import store, { history } from './configureStore';
+import { Route } from 'react-router';
+import 'ui-kit/materialDesignIcons.css';
 
-export default class App extends Component {
+export default class App extends Component<Object> {
   render() {
     return (
       <Provider store={store}>

@@ -1,9 +1,13 @@
 // @flow
 import { validateSchema } from 'erschema';
 import sessions from './sessions';
+import prescriptions from './prescriptions';
+import myPrescriptions from './myPrescriptions';
 
 const schema = {
-  sessions
+  sessions,
+  prescriptions,
+  myPrescriptions
 };
 
 validateSchema(schema);
