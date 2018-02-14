@@ -1,9 +1,11 @@
 // @flow
 
-import React from 'react'
+import React from 'react';
 
-export default class extends React.PureComponent {
-  render(){
-    return <div>Hello how are you</div>
+type $props = Object;
+
+export default class Home extends React.PureComponent<$props> {
+  render() {
+    return <div>Hello how are you</div>;
   }
 }

@@ -1,11 +1,30 @@
 {
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "jest/globals": true
+    },
    "parser": "babel-eslint",
+   "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      }
+   },
    "extends": [
+    "plugin:react/recommended",
+    "plugin:flowtype/recommended",
     "prettier",
     "prettier/flowtype",
     "prettier/react",
     "prettier/standard"
    ],
+   "plugins": ["react", "jest", "flowtype"],
    "rules": {
+       "no-undef": "error",
+       "no-unused-vars": "error",
+       "react/prop-types": 0
+    },
+    "globals": {
+       "process": true
     }
 }

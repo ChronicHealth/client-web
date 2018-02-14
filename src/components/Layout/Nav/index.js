@@ -1,28 +1,69 @@
 // @flow
-import React from 'react';
-import {IconMenu, MenuItem, MenuDivider } from 'react-toolbox/lib/menu';
-import { connect } from 'react-redux'
+import * as React from 'react';
+import { IconMenu, MenuItem, MenuDivider } from 'react-toolbox/lib/menu';
+import { connect } from 'react-redux';
 import { flowRight } from 'lodash';
-import * as routerActions from '@client/actions/router'
+import { createStructuredSelector } from 'reselect';
+import { isLoggedIn } from '@client/selectors/pages/sessions';
+import { currentUser } from '@client/selectors/users';
+import { goToUser } from '@client/actions/users';
+import { logout } from '@client/actions/pages/sessions';
+import * as routerActions from '@client/actions/router';
+import styles from './style.pcss';
+type $props = Object;
 
-export class Nav extends React.PureComponent {
-  render(){
+export class Nav extends React.PureComponent<$props> {
+  render() {
+    const { props } = this;
     return (
-      <IconMenu icon='more_vert' position='topRight' menuRipple>
-        <MenuItem value='signup' caption='Signup' onClick={this.props.goToSignup} />
-        <MenuItem value='tests' caption='Tests' />
-        <MenuItem value='routines' caption='Routines' />
-        <MenuDivider />
-        <MenuItem value='signout' icon='delete' caption='Delete' disabled />
+      <IconMenu icon="more_vert" position="topRight" menuRipple>
+        {props.isLoggedIn ? (
+          <React.Fragment>
+            <MenuItem
+              value="user"
+              onClick={() => props.goToUser(props.currentUser.id)}
+              icon="account_circle"
+              caption={props.currentUser.username}
+            />
+            <MenuDivider />
+            <MenuItem
+              value="signout"
+              onClick={props.logout}
+              icon={<span className={styles.signout}>x</span>}
+              caption="Signout"
+            />
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <MenuItem
+              value="signup"
+              caption="Signup"
+              onClick={this.props.goToSignup}
+            />
+            <MenuItem
+              value="login"
+              caption="Login"
+              onClick={this.props.goToLogin}
+            />
+          </React.Fragment>
+        )}
       </IconMenu>
     );
   }
 }
 
-export const mapDispatchToProps = (dispatch) => ({
-  goToSignup: ()=>dispatch(routerActions.push('/signup'))
-})
+export const mapDispatchToProps = (dispatch: $$dispatch) => ({
+  goToSignup: () => dispatch(routerActions.push('/signup')),
+  goToLogin: () => dispatch(routerActions.push('/login')),
+  goToUser: (id: $$id) => dispatch(goToUser(id)),
+  logout: () => {
+    dispatch(logout()), dispatch(routerActions.push('/'));
+  }
+});
 
-export default flowRight([
-  connect(null, mapDispatchToProps),
-])(Nav)
+export const mapStateToProps = createStructuredSelector({
+  isLoggedIn,
+  currentUser
+});
+
+export default flowRight([connect(mapStateToProps, mapDispatchToProps)])(Nav);

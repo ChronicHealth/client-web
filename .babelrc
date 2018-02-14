@@ -1,8 +1,11 @@
 {
-  "presets": ["react", "flow"],
+  "presets": ["env","react", "flow"],
   "plugins": [["module-resolver", {
-    "root": ["./src"],
-    "alias": {
-    }
-  }]]
+      "root": ["./src"],
+      "alias": {
+      }
+    }],
+    "transform-object-rest-spread",
+    "transform-class-properties"
+  ]
 }
