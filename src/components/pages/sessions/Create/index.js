@@ -2,7 +2,7 @@
 import React from 'react';
 import { flowRight } from 'lodash';
 import { TextInput, Button } from 'ui-kit';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from '@client/utils/components';
 import { create as createSession } from '@client/actions/pages/sessions';
 import { goToUser } from '@client/actions/users';
 import { connect } from 'react-redux';
@@ -28,7 +28,7 @@ export class CreateSession extends React.PureComponent<$props> {
     );
   }
 }
-// $FlowFixMe
+
 export const mapDispatchToProps = (dispatch: $$dispatch) =>
   bindActionCreators(
     {

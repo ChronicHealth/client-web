@@ -71,6 +71,13 @@ export const baseServices = (thisPrefix: string, host?: string) => {
       const { prefix, ...finalOptions } = options;
       return get(_getUrl(prefix || thisPrefix, url), finalOptions);
     },
+    getBatch: (ids: $$id[], options?: Object = {}) => {
+      const { prefix, ...finalOptions } = options;
+      return post(_getUrl(prefix || thisPrefix, 'index'), {
+        ...finalOptions,
+        body: JSON.stringify({ ids })
+      });
+    },
     update: (url: $url, body: any = {}, options?: Object = {}) => {
       const { prefix, ...finalOptions } = options;
       return patch(_getUrl(prefix || thisPrefix, url), {

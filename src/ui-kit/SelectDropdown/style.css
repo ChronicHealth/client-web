@@ -1,0 +1,26 @@
+.customReactSelect-a2z7 .Select-control {
+  border: none;
+  border-bottom: 1px #eae9e9 solid;
+  font-family: Roboto, sans-serif;
+  border-radius: 0px;
+}
+
+.customReactSelect-a2z7 .Select-control .Select-placeholder {
+  color: rgba(0, 0, 0, 0.26) !important;
+  padding-left: 0px;
+}
+
+.customReactSelect-a2z7 .Select-menu-outer {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  border: none;
+  background: white;
+  font-family: Roboto, sans-serif;
+}
+
+.customReactSelect-a2z7
+  .Select-menu-outer
+  .Select-menu
+  .Select-option.is-focused {
+  background: #eae9e9 !important;
+}

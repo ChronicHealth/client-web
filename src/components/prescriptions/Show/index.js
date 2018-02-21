@@ -3,6 +3,8 @@ import React from 'react';
 import { flowRight } from 'lodash';
 import ULItem from 'ui-kit/UL/Item';
 import UL from 'ui-kit/UL';
+import IssuesButton from 'components/issues/Button';
+import { types } from '@client/models/Issue';
 import get from '../get';
 
 type $props = Object;
@@ -49,9 +51,10 @@ export class ShowPrescription extends React.PureComponent<$props> {
         />
         <ShowText title="Scope" value={props.prescription.scope} />
         <ShowMulti title="References" values={props.prescription.refs} />
+        <IssuesButton id={props.id} type={types.PRESCRIPTION} />
       </div>
     );
   }
 }
 
-export default flowRight([get])(ShowPrescription);
+export default flowRight([get.connect, get.khange])(ShowPrescription);

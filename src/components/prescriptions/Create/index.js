@@ -6,7 +6,7 @@ import { form } from '@client/hocs';
 import Yup from 'yup';
 import { Button } from 'ui-kit';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from '@client/utils/components';
 import {
   create as createPrescription,
   goToPrescription
@@ -34,7 +34,7 @@ export class CreatePrescription extends React.PureComponent<$props> {
     );
   }
 }
-// $FlowFixMe
+
 export const mapDispatchToProps = (dispatch: $$dispatch) =>
   bindActionCreators(
     {

@@ -1,11 +1,12 @@
 // @flow
-
 import { Record } from 'immutable';
 
 export const properties = {
+  id: '',
   username: '',
-  email: '',
-  id: ''
+  description: '',
+  blurb: '',
+  location: ''
 };
 
 export default class User extends Record(properties) {}

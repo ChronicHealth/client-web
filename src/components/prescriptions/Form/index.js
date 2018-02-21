@@ -12,10 +12,10 @@ export class PrescriptionForm extends React.PureComponent<$props> {
       <React.Fragment>
         <TextInput {...props.fields.name} />
         <MultiDropdown {...props.fields.purpose} source={[]} />
-        <TextInput multiline {...props.fields.notes} />
-        <TextInput multiline {...props.fields.instructives} />
-        <TextInput multiline {...props.fields.scope} />
-        <MultiDropdown {...props.fields.refs} source={[]} />
+        <TextInput rows={3} multiline {...props.fields.notes} />
+        <TextInput rows={3} multiline {...props.fields.instructives} />
+        <TextInput rows={3} multiline {...props.fields.scope} />
+        <MultiDropdown {...props.fields.refs} label="References" source={[]} />
       </React.Fragment>
     );
   }

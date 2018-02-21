@@ -1,20 +1,32 @@
 // @flow
-
+import createNormerActionCreators from 'normer-actions';
 import { batchActions } from 'redux-batched-actions';
 import { entities, relationships } from '@client/reducers/er';
 import schema from '@client/schemas';
 import pagesSchema from '@client/schemas/pages';
-import erAction from '@client/utils/erschemaAction';
 
-const rawERFunc = erAction(entities, relationships, schema);
+const entityActionCreatorGenerator = entityName => entities[entityName];
+const relationshipActionCreatorGenerator = entityName =>
+  relationships[entityName];
+
+const rawERFunc = createNormerActionCreators(
+  entityActionCreatorGenerator,
+  relationshipActionCreatorGenerator,
+  schema
+);
 
 const erFunc = (...args) => batchActions(rawERFunc(...args));
 
 export const erActions = (entityName: string) => {
+  const get = (input: Object, options?: Object) => {
+    return erFunc(input, entityName, options);
+  };
+  const index = (inputs: Object[], options?: Object) => {
+    return batchActions(inputs.map(input => get(input, options)));
+  };
   return {
-    get: (input: Object, options?: Object) => {
-      return erFunc(input, entityName, options);
-    }
+    get,
+    index
   };
 };
 
@@ -35,7 +47,7 @@ export const baseActions = (name: string, reducer: Object, service: Object) => {
     create: (values: Object) => (dispatch: $$dispatch) => {
       return service.create(values).then(id => {
         dispatch(
-          reducer.create({
+          er.get({
             id,
             ...values
           })
@@ -46,7 +58,7 @@ export const baseActions = (name: string, reducer: Object, service: Object) => {
     update: (id: $$id, values: Object) => (dispatch: $$dispatch) => {
       return service.update(id, values).then(() => {
         dispatch(
-          reducer.update({
+          er.get({
             id,
             ...values
           })
@@ -60,6 +72,25 @@ export const baseActions = (name: string, reducer: Object, service: Object) => {
           dispatch(er.get(entity));
         }
         return entity;
+      });
+    },
+    getBatch: (ids: $$id[]) => (dispatch: $$dispatch) => {
+      if (!ids.length) {
+        return Promise.resolve([]);
+      }
+      return service.getBatch(ids).then(entities => {
+        if (entities) {
+          dispatch(er.index(entities));
+        }
+        return entities;
+      });
+    },
+    search: (input: string) => (dispatch: $$dispatch) => {
+      return service.search(input).then(entities => {
+        if (entities) {
+          dispatch(er.index(entities));
+        }
+        return entities;
       });
     }
   };

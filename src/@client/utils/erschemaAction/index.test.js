@@ -2,7 +2,7 @@
 
 import { getEntityActions, getRelationshipActions } from './';
 
-describe('erschemaReducer', () => {
+describe('normerReducer', () => {
   describe('getEntityActions', () => {
     const entities = {
       users: {

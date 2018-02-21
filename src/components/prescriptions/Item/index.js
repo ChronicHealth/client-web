@@ -4,8 +4,11 @@ import { ULItem } from 'ui-kit';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import * as prescriptionSelectors from '@client/selectors/prescriptions';
-import { goToEditPrescription } from '@client/actions/prescriptions';
-import { bindActionCreators } from 'redux';
+import {
+  goToEditPrescription,
+  goToPrescription
+} from '@client/actions/prescriptions';
+import { bindActionCreators } from '@client/utils/components';
 
 type $props = Object;
 
@@ -14,7 +17,9 @@ export class PrescriptionItem extends React.PureComponent<$props> {
     const { props } = this;
     return (
       <ULItem
-        onClick={props.goToEditPrescription}
+        onClick={
+          props.canEdit ? props.goToEditPrescription : props.goToPrescription
+        }
         caption={props.prescription.name}
       />
     );
@@ -28,7 +33,8 @@ export const mapStateToProps = createStructuredSelector({
 export const mapDispatchToProps = (dispatch: $$dispatch, props: $props) =>
   bindActionCreators(
     {
-      goToEditPrescription: () => goToEditPrescription(props.id)
+      goToEditPrescription: () => goToEditPrescription(props.id),
+      goToPrescription: () => goToPrescription(props.id)
     },
     dispatch
   );

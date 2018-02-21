@@ -1,9 +1,8 @@
 // @flow
 
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from '@client/utils/components';
 import { checkIfLoggedIn } from '@client/actions/pages/sessions';
 
-// $FlowFixMe
 export const mapDispatchToProps = (dispatch: $$dispatch) =>
   bindActionCreators(
     {

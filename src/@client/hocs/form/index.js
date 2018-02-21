@@ -1,12 +1,20 @@
 // @flow
 import * as React from 'react';
 import { withFormik } from 'formik';
-import { startCase, toLower } from 'lodash';
+import { startCase, toLower, flowRight } from 'lodash';
+import reset from '../reset';
 
 type $props = Object;
 
 export default (properties: Object) => {
   const last = {};
+  const mapPropsToValues = props => {
+    const initialValue = properties.mapPropsToValues(props);
+    if (!last.initialValue) {
+      last.initialValue = initialValue;
+    }
+    return last.initialValue;
+  };
   const getFields = (
     values,
     errors,
@@ -40,6 +48,14 @@ export default (properties: Object) => {
   };
   return (Comp: React.ComponentType<any>) => {
     class Form extends React.Component<$props> {
+      componentWillMount() {
+        if (this.props.passUpReinitializeForm)
+          this.props.passUpReinitializeForm(this.reinitializeForm);
+      }
+      reinitializeForm = () => {
+        last.initialValue = undefined;
+        this.props.reset();
+      };
       render() {
         const {
           values,
@@ -57,13 +73,18 @@ export default (properties: Object) => {
               touched,
               setFieldValue,
               setFieldTouched,
-              properties.handleChange(props)
+              properties.handleChange
+                ? properties.handleChange(props)
+                : undefined
             )}
             {...props}
           />
         );
       }
     }
-    return withFormik(properties)(Form);
+    return flowRight([
+      reset,
+      withFormik({ ...properties, mapPropsToValues, enableReinitialize: true })
+    ])(Form);
   };
 };

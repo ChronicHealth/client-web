@@ -5,9 +5,9 @@ import { flowRight } from 'lodash';
 import { push } from '@client/actions/router';
 import { connect } from 'react-redux';
 import { getPrescriptions } from '@client/actions/pages/myPrescriptions';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from '@client/utils/components';
 import { createStructuredSelector } from 'reselect';
-import * as pagePrescriptionSelectors from '@client/selectors/pages/prescriptions';
+import * as pagePrescriptionSelectors from '@client/selectors/pages/myPrescriptions';
 import PrescriptionItem from '../Item';
 
 type $props = Object;
@@ -17,18 +17,20 @@ export class MyPrescriptions extends React.PureComponent<$props> {
     this.props.getPrescriptions();
   }
   render() {
+    const { canEdit } = this.props;
     return (
       <div>
-        <h1>Prescriptions</h1>
         <UL>
-          <ULItem
-            onClick={this.props.goToCreatePrescription}
-            selectable
-            caption="Create Prescription"
-            leftIcon="add"
-          />
+          {canEdit && (
+            <ULItem
+              onClick={this.props.goToCreatePrescription}
+              selectable
+              caption="Create Prescription"
+              leftIcon="add"
+            />
+          )}
           {this.props.prescriptionIds.map(id => {
-            return <PrescriptionItem key={id} id={id} />;
+            return <PrescriptionItem canEdit={canEdit} key={id} id={id} />;
           })}
         </UL>
       </div>

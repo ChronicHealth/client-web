@@ -3,7 +3,7 @@ import * as React from 'react';
 import RTLink from 'react-toolbox/lib/link';
 import { connect } from 'react-redux';
 import { push } from '@client/actions/router';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from '@client/utils/components';
 
 export class Link extends React.PureComponent<Object> {
   handleLocal = (href: string, event: Event) => {
@@ -25,7 +25,7 @@ export class Link extends React.PureComponent<Object> {
     );
   }
 }
-// $FlowFixMe
+
 const mapDispatchToProps = (dispatch: $$dispatch) =>
   bindActionCreators(
     {
@@ -34,5 +34,4 @@ const mapDispatchToProps = (dispatch: $$dispatch) =>
     dispatch
   );
 
-// $FlowFixMe
 export default connect(null, mapDispatchToProps)(Link);

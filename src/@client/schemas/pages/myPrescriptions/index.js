@@ -1,5 +1,5 @@
 // @flow
-import { relationshipTypes } from 'erschema';
+import { relationshipTypes } from 'normer';
 import Model, { properties } from '@client/models/pages/MyPrescription';
 import { standardizePage } from '@client/utils/schemas';
 

@@ -2,13 +2,12 @@
 
 import khange, { kheck } from 'khange';
 import { connect } from 'react-redux';
-import { flowRight } from 'lodash';
 import { createStructuredSelector } from 'reselect';
 import { getParam } from '@client/selectors/router';
 import * as prescriptionSelectors from '@client/selectors/prescriptions';
 
 import { get } from '@client/actions/prescriptions';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from '@client/utils/components';
 
 const getPrescriptionId = getParam('prescriptionId');
 
@@ -17,7 +16,6 @@ export const mapStateToProps = createStructuredSelector({
   prescription: prescriptionSelectors.find(getPrescriptionId)
 });
 
-// $FlowFixMe
 export const mapDispatchToProps = (dispatch: $$dispatch) =>
   bindActionCreators(
     {
@@ -27,10 +25,12 @@ export const mapDispatchToProps = (dispatch: $$dispatch) =>
   );
 
 export const onKhange = (props: Object) => {
-  props.get(props.id);
+  props.get(props.id).then(() => {
+    if (props.reinitializeForm) props.reinitializeForm();
+  });
 };
 
-export default flowRight([
-  connect(mapStateToProps, mapDispatchToProps),
-  khange(kheck('id'), onKhange)
-]);
+export default {
+  connect: connect(mapStateToProps, mapDispatchToProps),
+  khange: khange(kheck('id'), onKhange)
+};

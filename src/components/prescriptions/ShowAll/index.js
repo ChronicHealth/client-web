@@ -1,11 +1,10 @@
 // @flow
 import React from 'react';
-import { UL, ULItem } from 'ui-kit';
+import { UL } from 'ui-kit';
 import { flowRight } from 'lodash';
-import { push } from '@client/actions/router';
 import { connect } from 'react-redux';
 import { getPrescriptions } from '@client/actions/pages/prescriptions';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from '@client/utils/components';
 import { createStructuredSelector } from 'reselect';
 import * as pagePrescriptionSelectors from '@client/selectors/pages/prescriptions';
 import PrescriptionItem from '../Item';
@@ -21,12 +20,6 @@ export class ShowAllPrescriptions extends React.PureComponent<$props> {
       <div>
         <h1>Prescriptions</h1>
         <UL>
-          <ULItem
-            onClick={this.props.goToCreatePrescription}
-            selectable
-            caption="Create Prescription"
-            leftIcon="add"
-          />
           {this.props.prescriptionIds.map(id => {
             return <PrescriptionItem key={id} id={id} />;
           })}
@@ -39,7 +32,6 @@ export class ShowAllPrescriptions extends React.PureComponent<$props> {
 export const mapDispatchToProps = (dispatch: $$dispatch) =>
   bindActionCreators(
     {
-      goToCreatePrescription: () => push('/prescriptions/create'),
       getPrescriptions
     },
     dispatch

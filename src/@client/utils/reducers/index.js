@@ -1,5 +1,5 @@
 // @flow
-import { relationshipTypes } from 'erschema';
+import { relationshipTypes } from 'normer';
 import { Map } from 'immutable';
 import { defaultScopeReducers } from 'noredux';
 import { noreduxActionBatch } from 'redux-noredux';
@@ -44,10 +44,10 @@ export const relationshipCreate = (
   state: $$state
 ) => state.setIn([name, id], valueFunc(name, value, id));
 
-export const baseRelationshipReducer = valueFunc => ({
-  create: (name, id, value) => state =>
+export const baseRelationshipReducer = (valueFunc: Function) => ({
+  create: (name: string, id: $$id, value: $$id | $$id[]) => (state: $$state) =>
     relationshipCreate(valueFunc, name, id, value, state),
-  add: (name, id, value) => state => {
+  add: (name: string, id: $$id, value: $$id | $$id[]) => (state: $$state) => {
     return state.updateIn([name, id], previousRelationship => {
       if (previousRelationship) {
         return previousRelationship.add(value);
@@ -55,7 +55,9 @@ export const baseRelationshipReducer = valueFunc => ({
       return valueFunc(name, value, id);
     });
   },
-  remove: (name, id, value) => state => {
+  remove: (name: string, id: $$id, value: $$id | $$id[]) => (
+    state: $$state
+  ) => {
     return state.updateIn([name, id], previousRelationship => {
       return previousRelationship.remove(value);
     });
@@ -71,17 +73,19 @@ export const baseRelationshipReducer = valueFunc => ({
       );
     }, state);
   },
-  concat: valueFunc => (name, id, value) => state => {
-    return state.upateIn([name, id], previousRelationship => {
+  concat: (name: string, id: $$id, value: $$id | $$id[]) => (
+    state: $$state
+  ) => {
+    return state.updateIn([name, id], previousRelationship => {
       if (previousRelationship) {
-        return state.concat(value);
+        return previousRelationship.concat(value);
       }
       return valueFunc(name, value, id);
     });
   }
 });
 
-export const getRelationship = relationship => {
+export const getRelationship = (relationship: Object) => {
   if (relationship.type === relationshipTypes.ONE) {
     return value => value;
   }

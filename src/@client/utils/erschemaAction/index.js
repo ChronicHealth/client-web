@@ -1,5 +1,5 @@
 // @flow
-import normalize from 'erschema';
+import normalize from 'normer';
 import { get } from 'lodash';
 
 export default function(

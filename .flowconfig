@@ -2,7 +2,6 @@
 flow-typed
 [ignore]
 .*/kefir/.*
-.*/erschema.*
 .*react-simplemde-editor.*
 [options]
 module.name_mapper='^tests' -> '<PROJECT_ROOT>/src/tests'

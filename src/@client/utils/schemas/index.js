@@ -1,6 +1,6 @@
 // @flow
 import { pick } from 'lodash';
-import { relationshipTypes } from 'erschema';
+import { relationshipTypes } from 'normer';
 
 export const standardize = (props: Object, overrideProps: Object = {}) => {
   return {
@@ -8,6 +8,7 @@ export const standardize = (props: Object, overrideProps: Object = {}) => {
     modifier: ent => pick(ent, Object.keys(props.properties)),
     relationships: props.relationships.reduce((finalResult, relationship) => {
       finalResult.push({
+        name: relationship.entityName,
         entityName: relationship.name,
         type: relationshipTypes.MANY,
         ...relationship

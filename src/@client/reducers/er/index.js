@@ -3,10 +3,19 @@ import { Map } from 'immutable';
 import * as users from '../users';
 import * as pages from '../pages';
 import * as prescriptions from '../prescriptions';
+import * as tests from '../tests';
+import * as routines from '../routines';
+import * as issues from '../issues';
+import * as comments from '../comments';
+
 const all = {
   users,
   pages,
-  prescriptions
+  prescriptions,
+  tests,
+  routines,
+  issues,
+  comments
 };
 
 const splitReducers = allReducers => {

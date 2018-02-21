@@ -6,12 +6,14 @@ import { form } from '@client/hocs';
 import Yup from 'yup';
 import { Button } from 'ui-kit';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from '@client/utils/components';
 import {
   update as updatePrescription,
   goToPrescription
 } from '@client/actions/prescriptions';
 import uuid from 'uuid/v1';
+import IssuesButton from 'components/issues/Button';
+import { types } from '@client/models/Issue';
 import PrescriptionForm from '../Form';
 import { createStructuredSelector } from 'reselect';
 import getPrescription from '../get';
@@ -25,11 +27,12 @@ export class EditPrescription extends React.PureComponent<$props> {
       <div>
         <h1>{props.prescription.name}</h1>
         <PrescriptionForm fields={this.props.fields} />
+        <IssuesButton id={props.id} type={types.PRESCRIPTION} />
       </div>
     );
   }
 }
-// $FlowFixMe
+
 export const mapDispatchToProps = (dispatch: $$dispatch, { id }) =>
   bindActionCreators(
     {
@@ -44,17 +47,17 @@ const array = Yup.array()
   .required();
 
 export default flowRight([
-  getPrescription,
+  getPrescription.connect,
   connect(null, mapDispatchToProps),
   form({
     enableReinitialize: true,
     mapPropsToValues: ({ prescription }) => ({
       name: prescription.name,
-      purpose: prescription.purpose,
+      purpose: prescription.purpose.toJS(),
       notes: prescription.notes,
       instructives: prescription.instructives,
       scope: prescription.scope,
-      refs: prescription.refs
+      refs: prescription.refs.toJS()
     }),
     validationSchema: Yup.object().shape({
       name: Yup.string().required(),
@@ -71,11 +74,7 @@ export default flowRight([
           return props.updatePrescription({ [key]: value });
         };
       };
-    },
-    handleSubmit: (values, { props }) => {
-      const id = uuid();
-      props.goToPrescription(id);
-      return props.createPrescription({ ...values, id });
     }
-  })
+  }),
+  getPrescription.khange
 ])(EditPrescription);
