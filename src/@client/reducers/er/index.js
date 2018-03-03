@@ -7,6 +7,11 @@ import * as tests from '../tests';
 import * as routines from '../routines';
 import * as issues from '../issues';
 import * as comments from '../comments';
+import * as clients from '../clients';
+import * as clientRoutines from '../clientRoutines';
+import * as prescriptionGroups from '../prescriptionGroups';
+import * as scopes from '../scopes';
+import * as bodyLevels from '../bodyLevels';
 
 const all = {
   users,
@@ -15,7 +20,12 @@ const all = {
   tests,
   routines,
   issues,
-  comments
+  comments,
+  clients,
+  clientRoutines,
+  prescriptionGroups,
+  scopes,
+  bodyLevels
 };
 
 const splitReducers = allReducers => {

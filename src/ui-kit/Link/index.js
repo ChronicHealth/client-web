@@ -12,7 +12,7 @@ export class Link extends React.PureComponent<Object> {
   };
   render() {
     /* eslint-disable */
-    const { props: { href, push, ...props } } = this;
+    const { href, push, ...props } = this.props;
     /* eslint-enable */
     const local = href[0] === '/';
     const finalHref = local ? `${process.env.CLIENT_URL || ''}${href}` : href;

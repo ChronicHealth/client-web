@@ -18,7 +18,6 @@ export class ShowAllRoutines extends React.PureComponent<$props> {
   render() {
     return (
       <div>
-        <h1>Routines</h1>
         <UL>
           {this.props.routineIds.map(id => {
             return <RoutineItem key={id} id={id} />;

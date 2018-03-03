@@ -2,7 +2,8 @@
 import { Record } from 'immutable';
 
 export const properties = {
-  id: 0,
-  content: ''
+  id: '',
+  content: '',
+  userId: ''
 };
 export default class Comment extends Record(properties) {}

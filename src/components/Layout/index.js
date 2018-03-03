@@ -14,33 +14,25 @@ import { mapDispatchToProps } from './connect';
 
 type $props = {
   checkIfLoggedIn: Function,
-  sidebarPinned: boolean
+  sidebarPinned: boolean,
+  goHome: Function,
+  indexScopes: Function
 };
 
 export class Layout extends React.Component<$props> {
   componentWillMount() {
     this.props.checkIfLoggedIn();
+    this.props.indexScopes();
   }
   render() {
     return (
       <div>
-        <AppBar title="Kronic" leftIcon="menu">
+        <AppBar
+          onLeftIconClick={this.props.goHome}
+          title="Kronic"
+          leftIcon="menu"
+        >
           <Navigation type="horizontal">
-            <Link
-              href={`${process.env.CLIENT_URL || ''}/prescriptions`}
-              label="Prescriptions"
-              icon="assignment"
-            />
-            <Link
-              href={`${process.env.CLIENT_URL || ''}/tests`}
-              label="Tests"
-              icon="colorize"
-            />
-            <Link
-              href={`${process.env.CLIENT_URL || ''}/routines`}
-              label="Routines"
-              icon="schedule"
-            />
             <Nav />
           </Navigation>
         </AppBar>

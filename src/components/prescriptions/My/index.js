@@ -38,11 +38,11 @@ export class MyPrescriptions extends React.PureComponent<$props> {
   }
 }
 
-export const mapDispatchToProps = (dispatch: $$dispatch) =>
+export const mapDispatchToProps = (dispatch: $$dispatch, props: Object) =>
   bindActionCreators(
     {
       goToCreatePrescription: () => push('/prescriptions/create'),
-      getPrescriptions
+      getPrescriptions: () => getPrescriptions(props.userId)
     },
     dispatch
   );

@@ -4,19 +4,17 @@ import React from 'react';
 import { flowRight } from 'lodash';
 import { form } from '@client/hocs';
 import Yup from 'yup';
-import { Button } from 'ui-kit';
 import { connect } from 'react-redux';
 import { bindActionCreators } from '@client/utils/components';
 import {
   update as updatePrescription,
   goToPrescription
 } from '@client/actions/prescriptions';
-import uuid from 'uuid/v1';
 import IssuesButton from 'components/issues/Button';
 import { types } from '@client/models/Issue';
 import PrescriptionForm from '../Form';
-import { createStructuredSelector } from 'reselect';
 import getPrescription from '../get';
+import { validationSchema } from '../../../@client/utils/prescriptions';
 
 type $props = Object;
 
@@ -33,7 +31,7 @@ export class EditPrescription extends React.PureComponent<$props> {
   }
 }
 
-export const mapDispatchToProps = (dispatch: $$dispatch, { id }) =>
+export const mapDispatchToProps = (dispatch: $$dispatch, { id }: $props) =>
   bindActionCreators(
     {
       updatePrescription: values => updatePrescription(id, values),
@@ -42,31 +40,18 @@ export const mapDispatchToProps = (dispatch: $$dispatch, { id }) =>
     dispatch
   );
 
-const array = Yup.array()
-  .of(Yup.string())
-  .required();
-
 export default flowRight([
-  getPrescription.connect,
+  getPrescription,
   connect(null, mapDispatchToProps),
   form({
-    enableReinitialize: true,
     mapPropsToValues: ({ prescription }) => ({
       name: prescription.name,
-      purpose: prescription.purpose.toJS(),
+      effects: prescription.effects.toJS(),
       notes: prescription.notes,
-      instructives: prescription.instructives,
-      scope: prescription.scope,
+      scopes: prescription.scopes.toJS(),
       refs: prescription.refs.toJS()
     }),
-    validationSchema: Yup.object().shape({
-      name: Yup.string().required(),
-      purpose: array,
-      notes: Yup.string().required(),
-      instructives: Yup.string().required(),
-      scope: Yup.string().required(),
-      refs: array
-    }),
+    validationSchema,
     handleChange: props => {
       return (key, onChange) => {
         return value => {
@@ -75,6 +60,5 @@ export default flowRight([
         };
       };
     }
-  }),
-  getPrescription.khange
+  })
 ])(EditPrescription);

@@ -3,13 +3,12 @@
 import React from 'react';
 import { flowRight } from 'lodash';
 import { form } from '@client/hocs';
-import Yup from 'yup';
 import { connect } from 'react-redux';
 import { bindActionCreators } from '@client/utils/components';
 import { update as updateRoutine, goToRoutine } from '@client/actions/routines';
-import uuid from 'uuid/v1';
 import RoutineForm from '../Form';
 import getRoutine from '../get';
+import { validationSchema } from '@client/utils/routines';
 
 type $props = Object;
 
@@ -38,20 +37,13 @@ export default flowRight([
   getRoutine,
   connect(null, mapDispatchToProps),
   form({
-    mapPropsToValues: ({ routine, prescriptionIds, testIds }) => ({
+    mapPropsToValues: ({ routine }) => ({
       name: routine.name,
       description: routine.description,
-      prescriptions: prescriptionIds.toArray(),
-      tests: testIds.toArray()
+      prescriptions: routine.prescriptions.toJS(),
+      tests: routine.tests.toJS()
     }),
-    validationSchema: Yup.object().shape({
-      name: Yup.string().required(),
-      description: Yup.string().required(),
-      prescriptions: Yup.array()
-        .of(Yup.string().required())
-        .required(),
-      tests: Yup.array().of(Yup.string().required())
-    }),
+    validationSchema,
     handleChange: props => {
       return (key, onChange) => {
         return value => {

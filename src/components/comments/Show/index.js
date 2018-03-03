@@ -4,15 +4,16 @@ import { Button } from 'ui-kit';
 
 type $props = {
   comment: Object,
-  toggleEditing: Function
+  toggleEditing: Function,
+  canEdit: boolean
 };
 export default class ShowComment extends React.PureComponent<$props> {
   render() {
-    const { comment } = this.props;
+    const { comment, canEdit } = this.props;
     return (
       <div>
         <p>{comment.content}</p>
-        <Button onClick={this.props.toggleEditing}>Edit</Button>
+        {canEdit && <Button onClick={this.props.toggleEditing}>Edit</Button>}
       </div>
     );
   }

@@ -5,8 +5,10 @@ import { flowRight } from '@client/utils/components';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { find } from '@client/selectors/comments';
+import { currentUserId } from '@client/selectors/users';
 import ShowComment from '../Show';
 import EditComment from '../Edit';
+import { createSelector } from 'reselect';
 type $props = Object;
 type $state = Object;
 
@@ -25,7 +27,11 @@ export class CommentItem extends React.PureComponent<$props, $state> {
         {this.state.isEditing ? (
           <EditComment toggleFinished={this.toggleEditing} {...this.props} />
         ) : (
-          <ShowComment toggleEditing={this.toggleEditing} {...this.props} />
+          <ShowComment
+            canEdit={this.props.canEdit}
+            toggleEditing={this.toggleEditing}
+            {...this.props}
+          />
         )}
       </div>
     );
@@ -33,7 +39,11 @@ export class CommentItem extends React.PureComponent<$props, $state> {
 }
 
 const mapStateToProps = createStructuredSelector({
-  comment: find()
+  comment: find(),
+  canEdit: createSelector(
+    [find(), currentUserId],
+    (comment, currentUserId) => comment.userId === currentUserId
+  )
 });
 
 export default flowRight([connect(mapStateToProps)])(CommentItem);

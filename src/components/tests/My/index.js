@@ -38,11 +38,11 @@ export class MyTests extends React.PureComponent<$props> {
   }
 }
 
-export const mapDispatchToProps = (dispatch: $$dispatch) =>
+export const mapDispatchToProps = (dispatch: $$dispatch, props: Object) =>
   bindActionCreators(
     {
       goToCreateTest: () => push('/tests/create'),
-      getTests
+      getTests: () => getTests(props.userId)
     },
     dispatch
   );

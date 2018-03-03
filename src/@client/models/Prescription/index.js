@@ -2,14 +2,14 @@
 
 import { Record, List } from 'immutable';
 import { transform } from '@client/utils/models';
+import PrescriptionScope from './Scope';
 
 export const properties = {
   name: '',
   notes: '',
-  instructives: '',
-  scope: '',
+  scopes: new List(),
   refs: new List(),
-  purpose: new List(),
+  effects: new List(),
   id: ''
 };
 
@@ -18,7 +18,12 @@ export default class Prescription extends Record(properties) {
     super(
       transform(props, {
         refs: List,
-        purpose: List
+        effects: List,
+        scopes: scopes => {
+          return new List(
+            scopes ? scopes.map(scope => new PrescriptionScope(scope)) : []
+          );
+        }
       })
     );
   }

@@ -4,8 +4,8 @@ import services from '@client/services/routines';
 const { get } = pageERActions('myRoutines');
 
 module.exports = {
-  getRoutines: () => (dispatch: $$dispatch) => {
-    return services.my().then(routines => {
+  getRoutines: (id: $$id) => (dispatch: $$dispatch) => {
+    return services.byUser(id).then(routines => {
       dispatch(get({ routines }));
       return routines;
     });

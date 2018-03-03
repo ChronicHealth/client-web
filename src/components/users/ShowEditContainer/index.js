@@ -26,7 +26,7 @@ export class UserShowEditContainer extends React.PureComponent<$props> {
             <Comp {...props} />
           </Col>
           <Col xs={12} md={8}>
-            <UserTabs canEdit={isCurrentUser} />
+            <UserTabs userId={props.id} canEdit={isCurrentUser} />
           </Col>
         </Row>
       </div>

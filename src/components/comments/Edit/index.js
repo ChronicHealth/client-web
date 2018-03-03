@@ -6,6 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import CommentForm from '../Form';
 import { form } from '@client/hocs';
 import { update } from '@client/actions/comments';
+import { Button } from 'ui-kit';
 
 type $stateProps = {};
 type $ownProps = Object;
@@ -20,6 +21,7 @@ export class EditComment extends React.PureComponent<$props> {
     return (
       <div>
         <CommentForm {...props} />
+        <Button onClick={props.toggleFinished}>Finished Editing</Button>
       </div>
     );
   }

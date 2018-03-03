@@ -8,9 +8,28 @@ import { search as searchPrescriptions } from '@client/actions/prescriptions';
 import { search as searchTests } from '@client/actions/tests';
 import PrescriptionItem from '../PrescriptionItem';
 import TestItem from '../TestItem';
+import CreateTest from './CreateTest';
 type $props = Object;
 
-export class RoutineForm extends React.PureComponent<$props> {
+const state = {
+  testId: ''
+};
+type $state = typeof state;
+
+export class RoutineForm extends React.PureComponent<$props, $state> {
+  state = state;
+  clearTest = () => {
+    this.setState({
+      ...state,
+      testId: ''
+    });
+  };
+  selectTest = id => {
+    this.setState({
+      ...state,
+      testId: id
+    });
+  };
   renderPrescriptionValues = (values: $$id[]) => {
     return (
       <UL>
@@ -27,16 +46,25 @@ export class RoutineForm extends React.PureComponent<$props> {
   };
   renderTestValues = (values: $$id[]) => {
     return (
-      <UL>
-        {values.map(id => (
-          <TestItem
-            onRemove={this.props.fields.tests.onChange}
-            values={values}
-            id={id}
-            key={id}
+      <React.Fragment>
+        {this.state.testId && (
+          <CreateTest
+            clearTest={this.clearTest}
+            field={this.props.fields.tests}
+            id={this.state.testId}
           />
-        ))}
-      </UL>
+        )}
+        <UL>
+          {values.map(({ id }) => (
+            <TestItem
+              onRemove={this.props.fields.tests.onChange}
+              values={values}
+              id={id}
+              key={id}
+            />
+          ))}
+        </UL>
+      </React.Fragment>
     );
   };
   render() {
@@ -53,6 +81,9 @@ export class RoutineForm extends React.PureComponent<$props> {
         <SelectDropdown
           renderValues={this.renderTestValues}
           {...props.fields.tests}
+          onBlur={() => {}}
+          onChange={() => {}}
+          onAdd={this.selectTest}
           loadOptions={props.searchTests}
         />
       </React.Fragment>

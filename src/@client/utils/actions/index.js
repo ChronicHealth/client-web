@@ -92,6 +92,14 @@ export const baseActions = (name: string, reducer: Object, service: Object) => {
         }
         return entities;
       });
+    },
+    index: () => (dispatch: $$dispatch) => {
+      return service.index().then(entities => {
+        if (entities) {
+          dispatch(er.index(entities));
+        }
+        return entities;
+      });
     }
   };
 };

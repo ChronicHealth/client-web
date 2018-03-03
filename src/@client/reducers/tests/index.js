@@ -1,5 +1,5 @@
 // @flow
-import Model from '@client/models/Tests';
+import Model from '@client/models/Test';
 import schema from '@client/schemas/tests';
 import {
   entityReducer,

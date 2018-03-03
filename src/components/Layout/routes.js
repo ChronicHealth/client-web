@@ -1,33 +1,55 @@
 //@flow
 import React from 'react';
 import { Switch, Route } from 'react-router';
+
 import PrescriptionMy from 'components/prescriptions/My';
 import PrescriptionShowAll from 'components/prescriptions/ShowAll';
 import PrescriptionCreate from 'components/prescriptions/Create';
 import PrescriptionShow from 'components/prescriptions/Show';
 import PrescriptionEdit from 'components/prescriptions/Edit';
+
+import PrescriptionGroupShowAll from 'components/prescriptionGroups/ShowAll';
+import PrescriptionGroupCreate from 'components/prescriptionGroups/Create';
+import PrescriptionGroupShow from 'components/prescriptionGroups/Show';
+import PrescriptionGroupEdit from 'components/prescriptionGroups/Edit';
+
 import TestMy from 'components/tests/My';
 import TestShowAll from 'components/tests/ShowAll';
 import TestCreate from 'components/tests/Create';
 import TestShow from 'components/tests/Show';
 import TestEdit from 'components/tests/Edit';
+
 import RoutineMy from 'components/routines/My';
 import RoutineShowAll from 'components/routines/ShowAll';
 import RoutineCreate from 'components/routines/Create';
 import RoutineShow from 'components/routines/Show';
 import RoutineEdit from 'components/routines/Edit';
+
 import UsersCreate from 'components/users/Create';
 import UsersShowEditContainer from 'components/users/ShowEditContainer';
+
 import IssuesEdit from 'components/issues/Edit';
 import IssuesCreate from 'components/issues/Create';
+
+import IssuesShowAllPrescriptionGroups from 'components/issues/ShowAll/PrescriptionGroups';
 import IssuesShowAllPrescriptions from 'components/issues/ShowAll/Prescriptions';
 import IssuesShowAllRoutines from 'components/issues/ShowAll/Routines';
 import IssuesShowAllTests from 'components/issues/ShowAll/Tests';
 import IssuesShow from 'components/issues/Show';
+
+import ClientsShowAll from 'components/clients/ShowAll';
+import ClientsCreate from 'components/clients/Create';
+import ClientsShow from 'components/clients/Show';
+
 import SessionsCreate from 'components/pages/sessions/Create';
+import Home from 'components/pages/Home';
 
 export default [
   <Switch key="switch">
+    <Route exact path="/clients" component={ClientsShowAll} />
+    <Route exact path="/clients/create" component={ClientsCreate} />
+    <Route exact path="/clients/:clientId" component={ClientsShow} />
+
     <Route exact path="/prescriptions" component={PrescriptionShowAll} />
     <Route exact path="/prescriptions/my" component={PrescriptionMy} />
     <Route exact path="/prescriptions/create" component={PrescriptionCreate} />
@@ -46,6 +68,33 @@ export default [
       path="/prescriptions/:prescriptionId"
       component={PrescriptionShow}
     />
+
+    <Route
+      exact
+      path="/prescription_groups"
+      component={PrescriptionGroupShowAll}
+    />
+    <Route
+      exact
+      path="/prescription_groups/create"
+      component={PrescriptionGroupCreate}
+    />
+    <Route
+      exact
+      path="/prescription_groups/:prescriptionGroupId/edit"
+      component={PrescriptionGroupEdit}
+    />
+    <Route
+      exact
+      path="/prescription_groups/:prescriptionGroupId/issues"
+      component={IssuesShowAllPrescriptionGroups}
+    />
+    <Route
+      exact
+      path="/prescription_groups/:prescriptionGroupId"
+      component={PrescriptionGroupShow}
+    />
+
     <Route exact path="/tests" component={TestShowAll} />
     <Route exact path="/tests/my" component={TestMy} />
     <Route exact path="/tests/create" component={TestCreate} />
@@ -70,5 +119,6 @@ export default [
     <Route exact path="/users/:userId" component={UsersShowEditContainer} />
     <Route exact path="/signup" component={UsersCreate} />
     <Route exact path="/login" component={SessionsCreate} />
+    <Route exact path="/" component={Home} />
   </Switch>
 ];

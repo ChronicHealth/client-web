@@ -13,6 +13,7 @@ import {
 } from '@client/actions/prescriptions';
 import uuid from 'uuid/v1';
 import PrescriptionForm from '../Form';
+import { validationSchema } from '../../../@client/utils/prescriptions';
 
 type $props = Object;
 
@@ -44,29 +45,23 @@ export const mapDispatchToProps = (dispatch: $$dispatch) =>
     dispatch
   );
 
-const array = Yup.array()
-  .of(Yup.string())
-  .required();
-
 export default flowRight([
   connect(null, mapDispatchToProps),
   form({
     mapPropsToValues: () => ({
       name: '',
-      purpose: [],
+      effects: [],
       notes: '',
-      instructives: '',
-      scope: '',
+      scopes: [
+        {
+          scopes: ['7624c780-1d93-11e8-911b-8f527e85fdf5'],
+          amountRange: '25 mg',
+          amountTime: '1 / day'
+        }
+      ],
       refs: []
     }),
-    validationSchema: Yup.object().shape({
-      name: Yup.string().required(),
-      purpose: array,
-      notes: Yup.string().required(),
-      instructives: Yup.string().required(),
-      scope: Yup.string().required(),
-      refs: array
-    }),
+    validationSchema,
     handleSubmit: (values, { props }) => {
       const id = uuid();
       props.goToPrescription(id);

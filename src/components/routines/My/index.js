@@ -38,11 +38,11 @@ export class MyRoutines extends React.PureComponent<$props> {
   }
 }
 
-export const mapDispatchToProps = (dispatch: $$dispatch) =>
+export const mapDispatchToProps = (dispatch: $$dispatch, props: Object) =>
   bindActionCreators(
     {
       goToCreateRoutine: () => push('/routines/create'),
-      getRoutines
+      getRoutines: () => getRoutines(props.userId)
     },
     dispatch
   );

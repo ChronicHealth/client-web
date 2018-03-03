@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Be A Programmer</title>
+    <title>Kronic</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Be a Programmer helps connects experienced volunteer programming mentors with people who want to become professional programmers" />
     <link rel="apple-touch-icon" sizes="57x57" href="/public/apple-icon-57x57.png?v=2">

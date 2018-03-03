@@ -18,7 +18,6 @@ export class ShowAllTests extends React.PureComponent<$props> {
   render() {
     return (
       <div>
-        <h1>Tests</h1>
         <UL>
           {this.props.testIds.map(id => {
             return <TestItem key={id} id={id} />;

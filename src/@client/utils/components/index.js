@@ -18,3 +18,10 @@ export function bindActionCreators<
     return finalResult;
   }, {});
 }
+
+export function removeItemFromArray<X>(item: X, array: Array<X>) {
+  const index = array.indexOf(item);
+  const nextValues = [...array];
+  nextValues.splice(index, 1);
+  return nextValues;
+}

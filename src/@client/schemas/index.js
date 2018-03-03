@@ -6,6 +6,11 @@ import tests from './tests';
 import routines from './routines';
 import issues from './issues';
 import comments from './comments';
+import clients from './clients';
+import clientRoutines from './clientRoutines';
+import prescriptionGroups from './prescriptionGroups';
+import scopes from './scopes';
+import bodyLevels from './bodyLevels';
 
 const schema = {
   users,
@@ -13,7 +18,12 @@ const schema = {
   tests,
   routines,
   issues,
-  comments
+  comments,
+  clients,
+  clientRoutines,
+  prescriptionGroups,
+  scopes,
+  bodyLevels
 };
 validateSchema(schema);
 

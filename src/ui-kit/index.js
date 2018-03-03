@@ -1,6 +1,8 @@
 // @flow
+import Header from './Header';
 import UL from './UL';
 import ULItem from './UL/Item';
+import ULSubHeader from './UL/Subheader';
 import TextInput from './TextInput';
 import Button from './Button';
 import MultiDropdown from './MultiDropdown';
@@ -15,8 +17,10 @@ import Tab from './Tabs/Tab';
 export * from './Card';
 
 export {
+  Header,
   UL,
   ULItem,
+  ULSubHeader,
   TextInput,
   Button,
   MultiDropdown,

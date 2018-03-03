@@ -12,8 +12,6 @@ import { createComment } from '@client/actions/issues';
 export class CreateComment extends React.PureComponent<Object> {
   render() {
     const { ...props } = this.props;
-    // props.handleSubmit()
-    // console.log(this.props.onSubmit, this.props.handleSubmit)
     return (
       <div>
         <CommentForm {...this.props} />

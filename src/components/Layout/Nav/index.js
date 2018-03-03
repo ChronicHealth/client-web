@@ -16,7 +16,12 @@ export class Nav extends React.PureComponent<$props> {
   render() {
     const { props } = this;
     return (
-      <IconMenu icon="more_vert" position="topRight" menuRipple>
+      <IconMenu
+        className={styles.moreVert}
+        icon="account_circle"
+        position="topRight"
+        menuRipple
+      >
         {props.isLoggedIn ? (
           <React.Fragment>
             <MenuItem
@@ -24,6 +29,12 @@ export class Nav extends React.PureComponent<$props> {
               onClick={() => props.goToUser(props.currentUser.id)}
               icon="account_circle"
               caption={props.currentUser.username}
+            />
+            <MenuItem
+              value="clients"
+              onClick={props.goToClients}
+              icon="accessibility"
+              caption="Clients"
             />
             <MenuDivider />
             <MenuItem
@@ -55,6 +66,7 @@ export class Nav extends React.PureComponent<$props> {
 export const mapDispatchToProps = (dispatch: $$dispatch) => ({
   goToSignup: () => dispatch(routerActions.push('/signup')),
   goToLogin: () => dispatch(routerActions.push('/login')),
+  goToClients: () => dispatch(routerActions.push('/clients')),
   goToUser: (id: $$id) => dispatch(goToUser(id)),
   logout: () => {
     dispatch(logout()), dispatch(routerActions.push('/'));

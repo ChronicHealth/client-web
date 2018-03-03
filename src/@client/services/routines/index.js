@@ -5,5 +5,5 @@ const base = baseServices('routines');
 
 module.exports = {
   ...base,
-  my: () => base.get('my')
+  byUser: (id: $$id) => base.get(`by_user/${id}`)
 };

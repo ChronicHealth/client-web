@@ -18,7 +18,6 @@ export class ShowAllPrescriptions extends React.PureComponent<$props> {
   render() {
     return (
       <div>
-        <h1>Prescriptions</h1>
         <UL>
           {this.props.prescriptionIds.map(id => {
             return <PrescriptionItem key={id} id={id} />;

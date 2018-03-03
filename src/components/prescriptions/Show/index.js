@@ -6,6 +6,7 @@ import UL from 'ui-kit/UL';
 import IssuesButton from 'components/issues/Button';
 import { types } from '@client/models/Issue';
 import get from '../get';
+import PrescriptionScope from '../../scopes/Prescription';
 
 type $props = Object;
 
@@ -24,6 +25,9 @@ class ShowText extends React.PureComponent<Object> {
 class ShowMulti extends React.PureComponent<Object> {
   render() {
     const { props } = this;
+    if (!props.values.size) {
+      return null;
+    }
     return (
       <div>
         <h3>{props.title}</h3>
@@ -37,24 +41,39 @@ class ShowMulti extends React.PureComponent<Object> {
   }
 }
 
-export class ShowPrescription extends React.PureComponent<$props> {
+class ShowScopes extends React.PureComponent<Object> {
   render() {
     const { props } = this;
+    if (!props.values.size) {
+      return null;
+    }
     return (
       <div>
-        <h1>{props.prescription.name}</h1>
-        <ShowMulti title="Purpose" values={props.prescription.purpose} />
-        <ShowText title="Notes" value={props.prescription.notes} />
-        <ShowText
-          title="Instructives / Amounts"
-          value={props.prescription.instructives}
-        />
-        <ShowText title="Scope" value={props.prescription.scope} />
-        <ShowMulti title="References" values={props.prescription.refs} />
+        <h3>{props.title}</h3>
+        <UL>
+          {props.values.map((scope, i) => {
+            return <PrescriptionScope key={i} scope={scope} />;
+          })}
+        </UL>
+      </div>
+    );
+  }
+}
+
+export class ShowPrescription extends React.PureComponent<$props> {
+  render() {
+    const { prescription, ...props } = this.props;
+    return (
+      <div>
+        <h1>{prescription.name}</h1>
+        <ShowText title="Synopsis" value={prescription.notes} />
+        <ShowScopes title="Scopes" values={prescription.scopes} />
+        <ShowMulti title="Effects" values={prescription.effects} />
+        <ShowMulti title="References" values={prescription.refs} />
         <IssuesButton id={props.id} type={types.PRESCRIPTION} />
       </div>
     );
   }
 }
 
-export default flowRight([get.connect, get.khange])(ShowPrescription);
+export default flowRight([get])(ShowPrescription);

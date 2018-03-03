@@ -2,13 +2,30 @@
 import * as React from 'react';
 import Async from 'react-select/lib/Async';
 import AsyncCreatable from 'react-select/lib/AsyncCreatable';
+import Creatable from 'react-select/lib/Creatable';
+import BaseSelect from 'react-select/lib/Select';
 import 'react-select/dist/react-select.css';
 import styles from './style.pcss';
 import './style.css';
 
-export default class SelectDropdown extends React.Component<Object> {
+type $props = {
+  create: Boolean,
+  renderValues: (values: Array<any>) => any,
+  onChange?: (values: Array<any>) => any,
+  onAdd?: (value: any) => any,
+  loadOptions: (input: string) => Promise<Array<Object>>,
+  value: Array<any>,
+  error: string,
+  label: string,
+  source?: Array<any>,
+  sync?: boolean
+};
+
+export default class SelectDropdown extends React.Component<$props> {
   onChange = (option: Object) => {
-    return this.props.onChange(this.props.value.concat([option.id]));
+    if (this.props.onChange)
+      this.props.onChange((this.props.value || []).concat([option.id]));
+    if (this.props.onAdd) this.props.onAdd(option.id);
   };
   loadOptions = (input: string) => {
     return this.props.loadOptions(input).then(options => {
@@ -18,8 +35,18 @@ export default class SelectDropdown extends React.Component<Object> {
     });
   };
   render() {
-    const { create, renderValues, value, error, label, ...props } = this.props;
-    const Select = create ? AsyncCreatable : Async;
+    const {
+      create,
+      renderValues,
+      value,
+      error,
+      label,
+      sync,
+      ...props
+    } = this.props;
+    const Select = sync
+      ? create ? Creatable : BaseSelect
+      : create ? AsyncCreatable : Async;
     return (
       <div>
         <Select
@@ -31,7 +58,7 @@ export default class SelectDropdown extends React.Component<Object> {
           onChange={this.onChange}
           loadOptions={this.loadOptions}
         />
-        {renderValues(value)}
+        {renderValues && renderValues(value)}
         {error && <div className={styles.error}>{error}</div>}
       </div>
     );

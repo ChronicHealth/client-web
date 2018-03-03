@@ -7,6 +7,8 @@ import tests from './tests';
 import myTests from './myTests';
 import routines from './routines';
 import myRoutines from './myRoutines';
+import myClients from './myClients';
+import homes from './homes';
 
 const schema = {
   sessions,
@@ -15,7 +17,9 @@ const schema = {
   tests,
   myTests,
   routines,
-  myRoutines
+  myRoutines,
+  myClients,
+  homes
 };
 
 validateSchema(schema);

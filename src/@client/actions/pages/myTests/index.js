@@ -5,8 +5,8 @@ import services from '@client/services/tests';
 const { get } = pageERActions('myTests');
 
 module.exports = {
-  getTests: () => (dispatch: $$dispatch) => {
-    return services.my().then(tests => {
+  getTests: (id: $$id) => (dispatch: $$dispatch) => {
+    return services.byUser(id).then(tests => {
       dispatch(get({ tests }));
       return tests;
     });

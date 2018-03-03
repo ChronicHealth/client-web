@@ -7,7 +7,8 @@ import { getParam } from '@client/selectors/router';
 import * as prescriptionSelectors from '@client/selectors/prescriptions';
 
 import { get } from '@client/actions/prescriptions';
-import { bindActionCreators } from '@client/utils/components';
+import { bindActionCreators, flowRight } from '@client/utils/components';
+import { formParent } from '@client/hocs';
 
 const getPrescriptionId = getParam('prescriptionId');
 
@@ -26,11 +27,12 @@ export const mapDispatchToProps = (dispatch: $$dispatch) =>
 
 export const onKhange = (props: Object) => {
   props.get(props.id).then(() => {
-    if (props.reinitializeForm) props.reinitializeForm();
+    if (props.reinitializeForm) props.reinitializeForm.go();
   });
 };
 
-export default {
-  connect: connect(mapStateToProps, mapDispatchToProps),
-  khange: khange(kheck('id'), onKhange)
-};
+export default flowRight([
+  formParent,
+  connect(mapStateToProps, mapDispatchToProps),
+  khange(kheck('id'), onKhange)
+]);
