@@ -34,6 +34,7 @@
     "css-loader": "^0.28.9",
     "dotenv": "^5.0.0",
     "eventsource-polyfill": "^0.9.6",
+    "express-handlebars": "^3.0.0",
     "flexbox-grid": "^1.0.0",
     "flow-bin": "^0.65.0",
     "formik": "^0.11.7",
