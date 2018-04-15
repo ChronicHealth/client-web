@@ -44,8 +44,15 @@ import ClientsShow from 'components/clients/Show';
 import SessionsCreate from 'components/pages/sessions/Create';
 import Home from 'components/pages/Home';
 
+import bodyLevels from 'components/bodyLevels/routes';
+import effects from 'components/effects/routes';
+import scopes from 'components/scopes/routes';
+
 export default [
   <Switch key="switch">
+    {bodyLevels}
+    {effects}
+    {scopes}
     <Route exact path="/clients" component={ClientsShowAll} />
     <Route exact path="/clients/create" component={ClientsCreate} />
     <Route exact path="/clients/:clientId" component={ClientsShow} />

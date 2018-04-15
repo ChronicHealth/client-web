@@ -6,6 +6,8 @@ import { entity } from '@client/reducers/clients';
 import service from '@client/services/clients';
 import * as clientRoutineService from '@client/services/clientRoutines';
 import { push } from '@client/actions/router';
+import { getBatch as getBatchPrescriptions } from '@client/actions/prescriptions';
+import { getBatch as getBatchBodyLevels } from '@client/actions/bodyLevels';
 
 const base = baseActions('clients', entity, service);
 const er = erActions('clients');
@@ -13,8 +15,12 @@ const er = erActions('clients');
 module.exports = {
   ...base,
   goToClient: id => push(`/clients/${id}`),
-  getRoutines: (id: $$id) => (dispatch: $$dispatch) =>
-    clientRoutineService.byClient(id).then(clientRoutines => {
-      dispatch(er.get({ id, clientRoutines }));
+  getRoutine: (id: $$id) => (dispatch: $$dispatch) =>
+    clientRoutineService.byClient(id).then(routine => {
+      if (!routine) return routine;
+      dispatch(er.get({ id, routine }));
+      dispatch(getBatchPrescriptions(routine.prescriptions));
+      dispatch(getBatchBodyLevels(routine.bodyLevels));
+      return routine;
     })
 };

@@ -1,45 +1,67 @@
 // @flow
 import * as React from 'react';
-import { flowRight, bindActionCreators } from '@client/utils/components';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import { ULItem } from 'ui-kit';
-import Prescription from '@client/models/Prescription';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import * as clientRoutineSelectors from '@client/selectors/clientRoutines';
+import {
+  goToEditClientRoutine,
+  goToClientRoutine
+} from '@client/actions/clientRoutines';
+import { bindActionCreators } from '@client/utils/components';
 import ClientRoutine from '@client/models/ClientRoutine';
-import { update } from '@client/actions/clientRoutines';
-import { find, findRelated } from '@client/selectors/clientRoutines';
-import * as prescriptionSelectors from '@client/selectors/prescriptions';
-type $stateProps = { clientRoutine: ClientRoutine, prescription: Prescription };
-type $ownProps = { id: $$id };
-type $dispatchProps = { updateClientRoutine: Function };
-type $props = $stateProps & $dispatchProps & $ownProps;
+
+type $stateProps = {
+  clientRoutine: ClientRoutine
+};
+
+type $ownProps = {
+  id: $$id,
+  canEdit?: boolean
+};
+
+type $dispatchProps = {
+  goToEditClientRoutine: Function,
+  goToClientRoutine: Function
+};
+
+type $props = $ownProps & $stateProps & $dispatchProps;
+
 export class ClientRoutineItem extends React.PureComponent<$props> {
-  toggleActive = () => {
-    this.props.updateClientRoutine({
-      active: !this.props.clientRoutine
-    });
-  };
   render() {
-    const { prescription } = this.props;
-    return <ULItem onClick={this.toggleActive} caption={prescription.name} />;
+    const {
+      canEdit,
+      clientRoutine,
+      goToEditClientRoutine,
+      goToClientRoutine,
+      ...props
+    } = this.props;
+    return (
+      <ULItem
+        {...props}
+        onClick={canEdit ? goToEditClientRoutine : goToClientRoutine}
+        caption={clientRoutine.name}
+      />
+    );
   }
 }
 
-const getPrescriptionId = findRelated('prescription');
-
-const mapStateToProps: $$selectorExact<$stateProps> = createStructuredSelector({
-  clientRoutine: find(),
-  prescription: prescriptionSelectors.find(getPrescriptionId)
+export const mapStateToProps: $$selectorExact<
+  $stateProps
+> = createStructuredSelector({
+  clientRoutine: clientRoutineSelectors.find()
 });
 
-const mapDispatchToProps = (dispatch: $$dispatch): $Exact<$dispatchProps> =>
+export const mapDispatchToProps = (
+  dispatch: $$dispatch,
+  props: $props
+): $Exact<$dispatchProps> =>
   bindActionCreators(
     {
-      updateClientRoutine: update
+      goToEditClientRoutine: () => goToEditClientRoutine(props.id),
+      goToClientRoutine: () => goToClientRoutine(props.id)
     },
     dispatch
   );
 
-export default flowRight([connect(mapStateToProps, mapDispatchToProps)])(
-  ClientRoutineItem
-);
+export default connect(mapStateToProps, mapDispatchToProps)(ClientRoutineItem);

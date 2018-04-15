@@ -2,7 +2,7 @@
 import { createStructuredSelector } from 'reselect';
 import { getParam } from '@client/selectors/router';
 import { flowRight } from '@client/utils/components';
-import { find, getRelated } from '@client/selectors/issues';
+import { find, findRelated, getRelated } from '@client/selectors/issues';
 import { connect } from 'react-redux';
 import khange, { kheck } from 'khange';
 import { bindActionCreators } from '@client/utils/components';
@@ -14,7 +14,8 @@ const id = getParam('issueId');
 const mapStateToProps = createStructuredSelector({
   id,
   issue: find(id),
-  commentIds: getRelated('comments', id)
+  commentIds: getRelated('comments', id),
+  userId: findRelated('user', id)
 });
 
 const mapDispatchToProps = (dispatch: $$dispatch) =>

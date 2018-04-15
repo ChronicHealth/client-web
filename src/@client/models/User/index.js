@@ -6,7 +6,8 @@ export const properties = {
   username: '',
   description: '',
   blurb: '',
-  location: ''
+  location: '',
+  moderator: false
 };
 
 export default class User extends Record(properties) {}

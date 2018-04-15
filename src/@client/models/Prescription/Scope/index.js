@@ -6,7 +6,8 @@ import { transform } from '@client/utils/models';
 export const properties = {
   scopes: new List(),
   amountRange: '',
-  amountTime: ''
+  amountTime: '',
+  amountFrequency: ''
 };
 
 export default class PrescriptionScope extends Record(properties) {

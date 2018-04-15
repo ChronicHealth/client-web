@@ -5,6 +5,8 @@ import getIssue from '../get';
 import { flowRight } from '@client/utils/components';
 import CreateComment from 'components/comments/Create';
 import { Button } from 'ui-kit';
+import UserChip from '../../users/Chip';
+import styles from './style.pcss';
 
 type $props = Object;
 
@@ -18,11 +20,16 @@ export class IssueShow extends React.PureComponent<$props, Object> {
     });
   };
   render() {
-    const { issue, commentIds } = this.props;
+    const { issue, commentIds, ...props } = this.props;
     return (
       <div>
-        <h1>{issue.title}</h1>
-        <p>{issue.content}</p>
+        <div className={styles.separator}>
+          <h1>{issue.title}</h1>
+          <p>{issue.content}</p>
+          <div>
+            <UserChip id={props.userId} />
+          </div>
+        </div>
         {commentIds.map(id => <CommentItem id={id} key={id} />)}
 
         {this.state.createComment ? (

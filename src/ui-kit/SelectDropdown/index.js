@@ -4,12 +4,14 @@ import Async from 'react-select/lib/Async';
 import AsyncCreatable from 'react-select/lib/AsyncCreatable';
 import Creatable from 'react-select/lib/Creatable';
 import BaseSelect from 'react-select/lib/Select';
+import classnames from 'classnames';
 import 'react-select/dist/react-select.css';
 import styles from './style.pcss';
 import './style.css';
 
 type $props = {
   create: Boolean,
+  className?: string,
   renderValues: (values: Array<any>) => any,
   onChange?: (values: Array<any>) => any,
   onAdd?: (value: any) => any,
@@ -42,6 +44,7 @@ export default class SelectDropdown extends React.Component<$props> {
       error,
       label,
       sync,
+      className,
       ...props
     } = this.props;
     const Select = sync
@@ -51,7 +54,7 @@ export default class SelectDropdown extends React.Component<$props> {
       <div>
         <Select
           placeholder={label}
-          className={'customReactSelect-a2z7'}
+          className={classnames('customReactSelect-a2z7', className)}
           valueKey="id"
           labelKey="name"
           {...props}

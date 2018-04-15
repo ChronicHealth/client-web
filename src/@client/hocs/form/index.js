@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { withFormik } from 'formik';
 import { startCase, toLower, flowRight } from 'lodash';
+import sentence from 'sentence-case';
 import reset from '../reset';
 
 type $props = Object;
@@ -21,6 +22,7 @@ export default (properties: Object) => {
     touched,
     setFieldValue,
     setFieldTouched,
+    setFieldError,
     handleChange
   ) => {
     if (
@@ -35,10 +37,14 @@ export default (properties: Object) => {
         const onChange = value => setFieldValue(key, value, true);
         finalResult[key] = {
           name: key,
-          label: startCase(toLower(key)),
+          label: startCase(sentence(key)),
           value: values[key],
           error: touched[key] ? errors[key] : '',
           onChange: handleChange ? handleChange(key, onChange) : onChange,
+          onError: (value, error) => {
+            onChange(value);
+            setFieldError(key, error);
+          },
           onBlur: () => setFieldTouched(key, true)
         };
         return finalResult;
@@ -63,6 +69,7 @@ export default (properties: Object) => {
           touched,
           setFieldValue,
           setFieldTouched,
+          setFieldError,
           ...props
         } = this.props;
         return (
@@ -73,6 +80,7 @@ export default (properties: Object) => {
               touched,
               setFieldValue,
               setFieldTouched,
+              setFieldError,
               properties.handleChange
                 ? properties.handleChange(props)
                 : undefined

@@ -1,6 +1,9 @@
 // @flow
 import { baseServices } from '@client/utils/services';
 
+const base = baseServices('body_levels');
+
 module.exports = {
-  ...baseServices('body_level')
+  ...base,
+  byUser: (userId: $$id) => base.get(`by_user/${userId}`)
 };

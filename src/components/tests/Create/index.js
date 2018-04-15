@@ -3,13 +3,13 @@
 import React from 'react';
 import { flowRight } from 'lodash';
 import { form } from '@client/hocs';
-import Yup from 'yup';
 import { Button } from 'ui-kit';
 import { connect } from 'react-redux';
 import { bindActionCreators } from '@client/utils/components';
 import { create as createTest, goToTest } from '@client/actions/tests';
 import uuid from 'uuid/v1';
 import TestForm from '../Form';
+import { validationSchema } from '../../../@client/utils/tests';
 
 type $props = Object;
 
@@ -41,25 +41,16 @@ export const mapDispatchToProps = (dispatch: $$dispatch) =>
     dispatch
   );
 
-const array = Yup.array()
-  .of(Yup.string())
-  .required();
-
 export default flowRight([
   connect(null, mapDispatchToProps),
   form({
     mapPropsToValues: () => ({
       name: '',
       notes: '',
-      instructives: '',
+      bodyLevels: [],
       refs: []
     }),
-    validationSchema: Yup.object().shape({
-      name: Yup.string().required(),
-      notes: Yup.string().required(),
-      instructives: Yup.string().required(),
-      refs: array
-    }),
+    validationSchema,
     handleSubmit: (values, { props }) => {
       const id = uuid();
       props.goToTest(id);

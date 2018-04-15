@@ -15,6 +15,8 @@ import Col from './Col';
 import Tabs from './Tabs';
 import Tab from './Tabs/Tab';
 export * from './Card';
+import Dropdown from './Dropdown';
+import DatePicker from './DatePicker';
 
 export {
   Header,
@@ -31,5 +33,7 @@ export {
   Row,
   Col,
   Tabs,
-  Tab
+  Tab,
+  Dropdown,
+  DatePicker
 };

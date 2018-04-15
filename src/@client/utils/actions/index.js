@@ -4,7 +4,7 @@ import { batchActions } from 'redux-batched-actions';
 import { entities, relationships } from '@client/reducers/er';
 import schema from '@client/schemas';
 import pagesSchema from '@client/schemas/pages';
-
+import { retypeAction } from 'redux-retype-actions';
 const entityActionCreatorGenerator = entityName => entities[entityName];
 const relationshipActionCreatorGenerator = entityName =>
   relationships[entityName];
@@ -25,8 +25,10 @@ export const erActions = (entityName: string) => {
     return batchActions(inputs.map(input => get(input, options)));
   };
   return {
-    get,
-    index
+    get: (input: Object, options?: Object) =>
+      retypeAction(`@@erAction/get/${entityName}`, get(input, options)),
+    index: (inputs: Object[], options?: Object) =>
+      retypeAction(`@@erAction/index/${entityName}`, index(inputs, options))
   };
 };
 

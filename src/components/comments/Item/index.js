@@ -22,6 +22,7 @@ export class CommentItem extends React.PureComponent<$props, $state> {
     });
   };
   render() {
+    console.log('here?');
     return (
       <div>
         {this.state.isEditing ? (
@@ -38,12 +39,15 @@ export class CommentItem extends React.PureComponent<$props, $state> {
   }
 }
 
+const getUserId = createSelector([find()], comment => comment.userId);
+
 const mapStateToProps = createStructuredSelector({
   comment: find(),
   canEdit: createSelector(
-    [find(), currentUserId],
-    (comment, currentUserId) => comment.userId === currentUserId
-  )
+    [getUserId, currentUserId],
+    (commentUserId, currentUserId) => commentUserId === currentUserId
+  ),
+  userId: getUserId
 });
 
 export default flowRight([connect(mapStateToProps)])(CommentItem);

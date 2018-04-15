@@ -4,10 +4,20 @@ import { Tabs as RTTabs } from 'react-toolbox';
 
 type $props = Object;
 
-export default class Tabs extends React.PureComponent<$props, *> {
-  state = {
-    index: 0
-  };
+const state = {
+  index: 0
+};
+
+export default class Tabs extends React.PureComponent<$props, typeof state> {
+  state = state;
+  constructor(props: $props) {
+    super(props);
+    if (props.index) {
+      this.state = {
+        index: props.index
+      };
+    }
+  }
   handleTabChange = (index: number) => {
     this.setState({
       index

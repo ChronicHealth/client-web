@@ -8,6 +8,7 @@ import { bindActionCreators } from '@client/utils/components';
 import { createStructuredSelector } from 'reselect';
 import * as pageTestSelectors from '@client/selectors/pages/tests';
 import TestItem from '../Item';
+import Instructions from 'components/general/Instructions';
 
 type $props = Object;
 
@@ -18,6 +19,7 @@ export class ShowAllTests extends React.PureComponent<$props> {
   render() {
     return (
       <div>
+        <Instructions content="Standard medical tests that, when taken, can reveal potential problem areas within the body that may lead to Alzheimer's Disease." />
         <UL>
           {this.props.testIds.map(id => {
             return <TestItem key={id} id={id} />;

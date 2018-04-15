@@ -3,6 +3,7 @@ import * as React from 'react';
 import { ULItem } from 'ui-kit';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
+import Prescription from '../../../@client/models/Prescription';
 import * as prescriptionSelectors from '@client/selectors/prescriptions';
 import {
   goToEditPrescription,
@@ -10,27 +11,52 @@ import {
 } from '@client/actions/prescriptions';
 import { bindActionCreators } from '@client/utils/components';
 
-type $props = Object;
+type $ownProps = {
+  id: $$id,
+  canEdit?: boolean
+};
+
+type $stateProps = {
+  prescription: Prescription
+};
+
+type $dispatchProps = {
+  goToEditPrescription: Function,
+  goToPrescription: Function
+};
+
+type $props = $ownProps & $stateProps & $dispatchProps;
 
 export class PrescriptionItem extends React.PureComponent<$props> {
   render() {
-    const { props } = this;
+    const {
+      canEdit,
+      goToEditPrescription,
+      goToPrescription,
+      prescription,
+      ...props
+    } = this.props;
+
     return (
       <ULItem
-        onClick={
-          props.canEdit ? props.goToEditPrescription : props.goToPrescription
-        }
-        caption={props.prescription.name}
+        {...props}
+        onClick={canEdit ? goToEditPrescription : goToPrescription}
+        caption={prescription.name}
       />
     );
   }
 }
 
-export const mapStateToProps = createStructuredSelector({
+export const mapStateToProps: $$selectorExact<
+  $stateProps
+> = createStructuredSelector({
   prescription: prescriptionSelectors.find()
 });
 
-export const mapDispatchToProps = (dispatch: $$dispatch, props: $props) =>
+export const mapDispatchToProps = (
+  dispatch: $$dispatch,
+  props: $props
+): $Exact<$dispatchProps> =>
   bindActionCreators(
     {
       goToEditPrescription: () => goToEditPrescription(props.id),

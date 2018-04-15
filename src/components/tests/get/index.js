@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { getParam } from '@client/selectors/router';
 import * as testSelectors from '@client/selectors/tests';
-
+import { flowRight } from 'lodash';
+import { getBatch } from '../../../@client/actions/bodyLevels';
+import { formParent } from '../../../@client/hocs';
 import { get } from '@client/actions/tests';
 import { bindActionCreators } from '@client/utils/components';
 
@@ -19,18 +21,21 @@ export const mapStateToProps = createStructuredSelector({
 export const mapDispatchToProps = (dispatch: $$dispatch) =>
   bindActionCreators(
     {
-      get
+      get,
+      getBodyLevels: getBatch
     },
     dispatch
   );
 
 export const onKhange = (props: Object) => {
-  props.get(props.id).then(() => {
-    if (props.reinitializeForm) props.reinitializeForm();
+  props.get(props.id).then(test => {
+    if (props.reinitializeForm) props.reinitializeForm.go();
+    return props.getBodyLevels(test.bodyLevels);
   });
 };
 
-export default {
-  connect: connect(mapStateToProps, mapDispatchToProps),
-  khange: khange(kheck('id'), onKhange)
-};
+export default flowRight([
+  formParent,
+  connect(mapStateToProps, mapDispatchToProps),
+  khange(kheck('id'), onKhange)
+]);

@@ -7,6 +7,19 @@ const relationships = [
   {
     name: 'prescriptionGroups',
     type: relationshipTypes.MANY
+  },
+  {
+    name: 'bodyLevels',
+    type: relationshipTypes.MANY
+  },
+  {
+    name: 'effects',
+    type: relationshipTypes.MANY
+  },
+  {
+    name: 'routine',
+    entityName: 'routines',
+    type: relationshipTypes.ONE
   }
 ];
 

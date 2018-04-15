@@ -1,35 +1,17 @@
 // @flow
 import * as React from 'react';
 import { flowRight } from 'lodash';
-import { TextInput, SelectDropdown, UL } from 'ui-kit';
+import { SelectDropdown, UL } from 'ui-kit';
 import { bindActionCreators } from '@client/utils/components';
 import { connect } from 'react-redux';
 import { search as searchPrescriptions } from '@client/actions/prescriptions';
-import { search as searchTests } from '@client/actions/tests';
+import { search as searchBodyLevels } from '@client/actions/bodyLevels';
 import PrescriptionItem from '../PrescriptionItem';
-import TestItem from '../TestItem';
-import CreateTest from './CreateTest';
+import BodyLevelItem from '../BodyLevelItem';
+
 type $props = Object;
 
-const state = {
-  testId: ''
-};
-type $state = typeof state;
-
-export class RoutineForm extends React.PureComponent<$props, $state> {
-  state = state;
-  clearTest = () => {
-    this.setState({
-      ...state,
-      testId: ''
-    });
-  };
-  selectTest = id => {
-    this.setState({
-      ...state,
-      testId: id
-    });
-  };
+export class RoutineForm extends React.PureComponent<$props> {
   renderPrescriptionValues = (values: $$id[]) => {
     return (
       <UL>
@@ -44,20 +26,13 @@ export class RoutineForm extends React.PureComponent<$props, $state> {
       </UL>
     );
   };
-  renderTestValues = (values: $$id[]) => {
+  renderBodyLevelValues = (values: $$id[]) => {
     return (
       <React.Fragment>
-        {this.state.testId && (
-          <CreateTest
-            clearTest={this.clearTest}
-            field={this.props.fields.tests}
-            id={this.state.testId}
-          />
-        )}
         <UL>
-          {values.map(({ id }) => (
-            <TestItem
-              onRemove={this.props.fields.tests.onChange}
+          {values.map(id => (
+            <BodyLevelItem
+              onRemove={this.props.fields.bodyLevels.onChange}
               values={values}
               id={id}
               key={id}
@@ -71,20 +46,17 @@ export class RoutineForm extends React.PureComponent<$props, $state> {
     const { props } = this;
     return (
       <React.Fragment>
-        <TextInput {...props.fields.name} />
-        <TextInput rows={3} multiline {...props.fields.description} />
         <SelectDropdown
           renderValues={this.renderPrescriptionValues}
           {...props.fields.prescriptions}
+          placeholder="Actions"
           loadOptions={props.searchPrescriptions}
         />
         <SelectDropdown
-          renderValues={this.renderTestValues}
-          {...props.fields.tests}
-          onBlur={() => {}}
-          onChange={() => {}}
-          onAdd={this.selectTest}
-          loadOptions={props.searchTests}
+          renderValues={this.renderBodyLevelValues}
+          {...props.fields.bodyLevels}
+          loadOptions={props.searchBodyLevels}
+          placeholder="Biomarkers"
         />
       </React.Fragment>
     );
@@ -95,7 +67,7 @@ const mapDispatchToProps = (dispatch: $$dispatch) =>
   bindActionCreators(
     {
       searchPrescriptions,
-      searchTests
+      searchBodyLevels
     },
     dispatch
   );

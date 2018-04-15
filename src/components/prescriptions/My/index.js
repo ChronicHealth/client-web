@@ -25,7 +25,7 @@ export class MyPrescriptions extends React.PureComponent<$props> {
             <ULItem
               onClick={this.props.goToCreatePrescription}
               selectable
-              caption="Create Prescription"
+              caption="Create Action"
               leftIcon="add"
             />
           )}

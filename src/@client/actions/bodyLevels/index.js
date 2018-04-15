@@ -9,5 +9,6 @@ const base = baseActions('bodyLevels', entity, service);
 
 module.exports = {
   ...base,
-  goToBodyLevel: id => push(`/body_level/${id}`)
+  goToBodyLevel: id => push(`/body_levels/${id}`),
+  goToEditBodyLevel: id => push(`/body_levels/${id}/edit`)
 };

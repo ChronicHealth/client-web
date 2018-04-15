@@ -6,25 +6,31 @@ import { connect } from 'react-redux';
 import { getParam } from '@client/selectors/router';
 import { createStructuredSelector } from 'reselect';
 import { formParent } from '@client/hocs';
-import { find } from '@client/selectors/clients';
-import { get } from '@client/actions/clients';
+import { find, findRelated, getRelated } from '@client/selectors/clients';
+import { get as getClient, getRoutine } from '@client/actions/clients';
 
 const onKhange = props =>
-  props.getClient(props.id).then(() => {
-    props.reinitializeForm.go();
-  });
+  Promise.all([props.getClient(props.id), props.getRoutine(props.id)]).then(
+    () => {
+      props.reinitializeForm.go();
+    }
+  );
 
 const getClientId = getParam('clientId');
 
 const mapStateToProps = createStructuredSelector({
   id: getClientId,
-  client: find(getClientId)
+  client: find(getClientId),
+  routineId: findRelated('routine', getClientId),
+  clientId: getClientId,
+  clientScopeIds: getRelated('scopes', getClientId)
 });
 
 const mapDispatchToProps = (dispatch: $$dispatch) =>
   bindActionCreators(
     {
-      getClient: get
+      getClient,
+      getRoutine
     },
     dispatch
   );

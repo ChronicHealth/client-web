@@ -5,19 +5,31 @@ import { ULItem } from 'ui-kit';
 import { flowRight } from 'lodash';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { find } from '@client/selectors/issues';
+import { find, findRelated } from '@client/selectors/issues';
 import { bindActionCreators } from '@client/utils/components';
 import { goToIssue } from '@client/actions/issues';
+import UserChip from 'components/users/Chip';
+import { clickable } from '@client/utils/styles';
 
 export class IssuesItem extends React.PureComponent<*> {
   render() {
-    const { issue, goToIssue } = this.props;
-    return <ULItem onClick={goToIssue} caption={issue.title} />;
+    const { issue, ...props } = this.props;
+    return (
+      <ULItem
+        content={
+          <p className={clickable} onClick={props.goToIssue}>
+            {issue.title}
+          </p>
+        }
+        rightActions={[<UserChip key="user" id={props.userId} />]}
+      />
+    );
   }
 }
 
 const mapStateToProps = createStructuredSelector({
-  issue: find()
+  issue: find(),
+  userId: findRelated('user')
 });
 
 const mapDispatchToProps = (dispatch: $$dispatch, props: Object) =>

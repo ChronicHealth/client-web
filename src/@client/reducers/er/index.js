@@ -12,6 +12,11 @@ import * as clientRoutines from '../clientRoutines';
 import * as prescriptionGroups from '../prescriptionGroups';
 import * as scopes from '../scopes';
 import * as bodyLevels from '../bodyLevels';
+import * as prescriptionResults from '../prescriptionResults';
+import * as prescriptionResultsRanges from '../prescriptionResultsRanges';
+import * as testResults from '../testResults';
+import * as testResultRanges from '../testResultRanges';
+import * as effects from '../effects';
 
 const all = {
   users,
@@ -25,7 +30,12 @@ const all = {
   clientRoutines,
   prescriptionGroups,
   scopes,
-  bodyLevels
+  bodyLevels,
+  prescriptionResults,
+  prescriptionResultsRanges,
+  testResultRanges,
+  testResults,
+  effects
 };
 
 const splitReducers = allReducers => {

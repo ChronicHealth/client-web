@@ -43,7 +43,8 @@ const mapDispatchToProps = (dispatch: $$dispatch): $Exact<$dispatchProps> =>
 const formik = {
   mapPropsToValues: () => ({
     name: '',
-    general: ''
+    general: '',
+    scopes: []
   }),
   validationSchema,
   handleSubmit: (values, { props }) => {

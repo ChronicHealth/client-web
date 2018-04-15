@@ -2,12 +2,14 @@
 import * as React from 'react';
 import { flowRight } from 'lodash';
 import { TextInput, MultiDropdown } from 'ui-kit';
-
+import { connect } from 'react-redux';
 import PrescriptionScope from 'components/scopes/Prescription';
-import { UL, ULItem, Header } from '../../../ui-kit';
+import { Micon, UL, ULItem, Header, SelectDropdown } from '../../../ui-kit';
 import CreateScope from './CreateScope';
-import Micon from '../../../ui-kit/Micon';
+import { search as searchEffects } from '@client/actions/effects';
 import styles from './style.pcss';
+import EffectItem from '../../effects/Item';
+import { bindActionCreators } from '../../../@client/utils/components';
 import { removeItemFromArray } from '../../../@client/utils/components';
 type $props = Object;
 
@@ -26,6 +28,30 @@ export class PrescriptionForm extends React.PureComponent<
       isCreatingScope: !this.state.isCreatingScope
     });
   };
+  renderEffects = (values: Array<$$id>) => {
+    return (
+      <UL>
+        {values.map((id, i) => {
+          return (
+            <EffectItem
+              rightActions={[
+                <Micon
+                  onClick={this.props.fields.effects.onChange.bind(
+                    this,
+                    removeItemFromArray(id, values)
+                  )}
+                  key="trash"
+                  value="remove"
+                />
+              ]}
+              id={id}
+              key={i}
+            />
+          );
+        })}
+      </UL>
+    );
+  };
   render() {
     const { props } = this;
     return (
@@ -37,9 +63,14 @@ export class PrescriptionForm extends React.PureComponent<
           {...props.fields.notes}
           label="Synopsis"
         />
-        <Header>Scopes</Header>
+        <TextInput {...props.fields.unit} />
+        <Header>
+          Scopes (Use these fields to document the default and special case
+          action amounts)
+        </Header>
         {this.state.isCreatingScope && (
           <CreateScope
+            unit={props.fields.unit.value}
             toggleCreateScope={this.toggleCreateScope}
             {...props.fields.scopes}
           />
@@ -68,17 +99,32 @@ export class PrescriptionForm extends React.PureComponent<
               key={i}
               itemContent={
                 <div className={styles.scope}>
-                  <PrescriptionScope scope={scope} />
+                  <PrescriptionScope
+                    unit={props.fields.unit.value}
+                    scope={scope}
+                  />
                 </div>
               }
             />
           ))}
         </UL>
-        <MultiDropdown {...props.fields.effects} source={[]} />
+        <SelectDropdown
+          renderValues={this.renderEffects}
+          {...props.fields.effects}
+          loadOptions={this.props.searchEffects}
+        />
         <MultiDropdown {...props.fields.refs} label="References" source={[]} />
       </React.Fragment>
     );
   }
 }
 
-export default flowRight([])(PrescriptionForm);
+const mapDispatchToProps = (dispatch: $$dispatch) =>
+  bindActionCreators(
+    {
+      searchEffects
+    },
+    dispatch
+  );
+
+export default flowRight([connect(null, mapDispatchToProps)])(PrescriptionForm);

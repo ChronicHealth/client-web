@@ -66,11 +66,12 @@ export const baseServices = (thisPrefix: string, host?: string) => {
   function _getUrl(prefix: string, url?: $url) {
     return `${thisHost}${prefix}${processUrl(url)}`;
   }
+  const getService = (url: $url, options?: Object = {}) => {
+    const { prefix, ...finalOptions } = options;
+    return get(_getUrl(prefix || thisPrefix, url), finalOptions);
+  };
   return {
-    get: (url: $url, options?: Object = {}) => {
-      const { prefix, ...finalOptions } = options;
-      return get(_getUrl(prefix || thisPrefix, url), finalOptions);
-    },
+    get: getService,
     getBatch: (ids: $$id[], options?: Object = {}) => {
       const { prefix, ...finalOptions } = options;
       return post(_getUrl(prefix || thisPrefix, 'index'), {
@@ -120,6 +121,9 @@ export const baseServices = (thisPrefix: string, host?: string) => {
         ...finalOptions,
         body: JSON.stringify(body)
       });
+    },
+    byUser: (id: $$id) => {
+      return getService(`by_user/${id}`);
     }
   };
 };

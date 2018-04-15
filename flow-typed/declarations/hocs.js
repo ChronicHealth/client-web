@@ -3,3 +3,9 @@ declare type $$formProps = {
   isValid: Boolean,
   fields: Object,
 };
+
+declare type $$formParentProps = {
+  reinitializeForm: {
+    go: Function,
+  }
+}

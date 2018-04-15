@@ -3,7 +3,8 @@ import React from 'react';
 import { flowRight } from 'lodash';
 import ULItem from 'ui-kit/UL/Item';
 import UL from 'ui-kit/UL';
-import get from '../get';
+import getTest from '../get';
+import BodyLevelItem from '../../bodyLevels/Item';
 
 type $props = Object;
 
@@ -35,6 +36,22 @@ class ShowMulti extends React.PureComponent<Object> {
   }
 }
 
+class ShowBodyLevels extends React.PureComponent<Object> {
+  render() {
+    const { props } = this;
+    return (
+      <div>
+        <h3>{props.title}</h3>
+        <UL>
+          {props.values.map((value, i) => {
+            return <BodyLevelItem key={i} id={value} />;
+          })}
+        </UL>
+      </div>
+    );
+  }
+}
+
 export class ShowTest extends React.PureComponent<$props> {
   render() {
     const { props } = this;
@@ -42,15 +59,11 @@ export class ShowTest extends React.PureComponent<$props> {
       <div>
         <h1>{props.test.name}</h1>
         <ShowText title="Notes" value={props.test.notes} />
-        <ShowText
-          title="Instructives / Amounts"
-          value={props.test.instructives}
-        />
-        <ShowText title="Scope" value={props.test.scope} />
+        <ShowBodyLevels title="Body Levels" values={props.test.bodyLevels} />
         <ShowMulti title="References" values={props.test.refs} />
       </div>
     );
   }
 }
 
-export default flowRight([get.connect, get.khange])(ShowTest);
+export default flowRight([getTest])(ShowTest);

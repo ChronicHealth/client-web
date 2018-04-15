@@ -6,16 +6,17 @@ import { transform } from '@client/utils/models';
 export const properties = {
   name: '',
   notes: '',
-  instructives: '',
+  bodyLevels: new List(),
   refs: new List(),
   id: ''
 };
 
-export default class Prescription extends Record(properties) {
+export default class Test extends Record(properties) {
   constructor(props: Object = {}) {
     super(
       transform(props, {
-        refs: List
+        refs: List,
+        bodyLevels: List
       })
     );
   }

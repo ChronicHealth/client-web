@@ -4,7 +4,13 @@ import { standardize } from '@client/utils/schemas';
 
 const relationships = [
   {
-    name: 'prescriptionGroups'
+    name: 'bodyLevels'
+  },
+  {
+    name: 'effects'
+  },
+  {
+    name: 'scopes'
   }
 ];
 

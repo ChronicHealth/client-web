@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import TextInput from 'ui-kit/TextInput';
+import SelectScope from '../../scopes/Select';
 
 type $props = Object;
 export default class ClientForm extends React.PureComponent<$props> {
@@ -10,6 +11,7 @@ export default class ClientForm extends React.PureComponent<$props> {
       <React.Fragment>
         <TextInput {...fields.name} />
         <TextInput multiline rows={3} {...fields.general} />
+        <SelectScope {...fields.scopes} />
       </React.Fragment>
     );
   }

@@ -2,5 +2,5 @@
 import form from './form';
 import formParent from './formParent';
 import reset from './reset';
-
-export { form, reset, formParent };
+import componentWillMount from './componentWillMount';
+export { form, reset, formParent, componentWillMount };

@@ -10,7 +10,8 @@ export const properties = {
   scopes: new List(),
   refs: new List(),
   effects: new List(),
-  id: ''
+  id: '',
+  unit: ''
 };
 
 export default class Prescription extends Record(properties) {

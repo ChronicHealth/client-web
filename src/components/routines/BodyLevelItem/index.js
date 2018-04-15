@@ -3,10 +3,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { flowRight } from 'lodash';
 import { createStructuredSelector } from 'reselect';
-import { find } from '@client/selectors/tests';
+import { find } from '@client/selectors/bodyLevels';
 import { ULItem, Micon } from 'ui-kit';
 
-export class TestItem extends React.PureComponent<*> {
+export class BodyLevelItem extends React.PureComponent<*> {
   handleRemove = () => {
     const { props } = this;
     const index = props.values.indexOf(props.id);
@@ -15,10 +15,10 @@ export class TestItem extends React.PureComponent<*> {
     props.onRemove(nextValues);
   };
   render() {
-    const { test } = this.props;
+    const { bodyLevel } = this.props;
     return (
       <ULItem
-        caption={test.name}
+        caption={bodyLevel.name}
         rightActions={[
           <Micon onClick={this.handleRemove} key="delete" value="delete" />
         ]}
@@ -28,7 +28,7 @@ export class TestItem extends React.PureComponent<*> {
 }
 
 const mapStateToProps = createStructuredSelector({
-  test: find()
+  bodyLevel: find()
 });
 
-export default flowRight([connect(mapStateToProps)])(TestItem);
+export default flowRight([connect(mapStateToProps)])(BodyLevelItem);

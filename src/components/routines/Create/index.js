@@ -8,6 +8,7 @@ import { Button } from 'ui-kit';
 import { connect } from 'react-redux';
 import { bindActionCreators } from '@client/utils/components';
 import { create as createRoutine, goToRoutine } from '@client/actions/routines';
+import { validationSchema } from '@client/utils/routines';
 import uuid from 'uuid/v1';
 import RoutineForm from '../Form';
 
@@ -49,19 +50,10 @@ export default flowRight([
   connect(null, mapDispatchToProps),
   form({
     mapPropsToValues: () => ({
-      name: '',
-      description: '',
       prescriptions: [],
       tests: []
     }),
-    validationSchema: Yup.object().shape({
-      name: Yup.string().required(),
-      description: Yup.string().required(),
-      prescriptions: Yup.array()
-        .of(Yup.string())
-        .required(),
-      tests: Yup.array().of(Yup.string())
-    }),
+    validationSchema,
     handleSubmit: (values, { props }) => {
       const id = uuid();
       props.goToRoutine(id);

@@ -12,6 +12,7 @@ import uuid from 'uuid/v1';
 import TestForm from '../Form';
 import { createStructuredSelector } from 'reselect';
 import getTest from '../get';
+import { validationSchema } from '../../../@client/utils/tests';
 
 type $props = Object;
 
@@ -41,25 +42,16 @@ const array = Yup.array()
   .required();
 
 export default flowRight([
-  getTest.connect,
+  getTest,
   connect(null, mapDispatchToProps),
   form({
     mapPropsToValues: ({ test }) => ({
       name: test.name,
-      purpose: test.purpose,
       notes: test.notes,
-      instructives: test.instructives,
-      scope: test.scope,
+      bodyLevels: test.bodyLevels,
       refs: test.refs
     }),
-    validationSchema: Yup.object().shape({
-      name: Yup.string().required(),
-      purpose: array,
-      notes: Yup.string().required(),
-      instructives: Yup.string().required(),
-      scope: Yup.string().required(),
-      refs: array
-    }),
+    validationSchema,
     handleChange: props => {
       return (key, onChange) => {
         return value => {
@@ -73,6 +65,5 @@ export default flowRight([
       props.goToTest(id);
       return props.createTest({ ...values, id });
     }
-  }),
-  getTest.khange
+  })
 ])(EditTest);

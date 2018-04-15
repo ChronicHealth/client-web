@@ -49,7 +49,8 @@ export default flowRight([
       effects: prescription.effects.toJS(),
       notes: prescription.notes,
       scopes: prescription.scopes.toJS(),
-      refs: prescription.refs.toJS()
+      refs: prescription.refs.toJS(),
+      unit: prescription.unit
     }),
     validationSchema,
     handleChange: props => {

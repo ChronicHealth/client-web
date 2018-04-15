@@ -9,5 +9,9 @@ const base = baseActions('scopes', entity, service);
 
 module.exports = {
   ...base,
-  goToScope: id => push(`/scope/${id}`)
+  verifyName: (name: string, id: $$id) => () => {
+    return service.verifyName(name, id);
+  },
+  goToScope: id => push(`/scopes/${id}`),
+  goToEditScope: id => push(`/scopes/${id}/edit`)
 };

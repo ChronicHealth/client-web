@@ -7,6 +7,12 @@ const relationships = [
   {
     entityName: 'comments',
     type: relationshipTypes.MANY
+  },
+  {
+    entityName: 'users',
+    name: 'user',
+    alias: 'userId',
+    type: relationshipTypes.ONE
   }
 ];
 

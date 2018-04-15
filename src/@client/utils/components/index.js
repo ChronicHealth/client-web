@@ -1,7 +1,8 @@
 // @flow
-
+import * as React from 'react';
 import { flowRight } from 'lodash';
 import Yup from 'yup';
+import { UL, ULItem } from '../../../ui-kit';
 
 export { flowRight, Yup };
 
@@ -24,4 +25,23 @@ export function removeItemFromArray<X>(item: X, array: Array<X>) {
   const nextValues = [...array];
   nextValues.splice(index, 1);
   return nextValues;
+}
+
+export class ShowMulti extends React.PureComponent<Object> {
+  render() {
+    const { props } = this;
+    if (!props.values.size) {
+      return null;
+    }
+    return (
+      <div>
+        <h3>{props.title}</h3>
+        <UL>
+          {props.values.map((value, i) => {
+            return <ULItem key={i} caption={value} />;
+          })}
+        </UL>
+      </div>
+    );
+  }
 }

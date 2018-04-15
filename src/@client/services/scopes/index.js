@@ -1,6 +1,9 @@
 // @flow
 import { baseServices } from '@client/utils/services';
 
+const base = baseServices('scopes');
+
 module.exports = {
-  ...baseServices('scopes')
+  ...base,
+  verifyName: (name, id) => base.post('verify_name', { id, name })
 };

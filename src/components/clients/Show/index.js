@@ -1,59 +1,26 @@
 // @flow
 import * as React from 'react';
-import { flowRight, bindActionCreators } from '@client/utils/components';
-import { connect } from 'react-redux';
-import getClient from '../get';
-import ClientForm from '../Form';
-import { validateSchema } from '@client/utils/clients';
-import Client from '@client/models/Client';
-import { form } from '@client/hocs';
-import { update } from '@client/actions/clients';
-import { Row, Col } from 'ui-kit';
-import ClientRoutinesShowAll from 'components/clientRoutines/ShowAll';
+import { Tabs, Tab } from '../../../ui-kit';
+import ClientGeneral from '../General';
+import ClientPrescriptions from '../Prescriptions';
+import ClientTests from '../Tests';
 
-type $stateProps = {};
-type $ownProps = { id: $$id, client: Client };
-type $dispatchProps = { updateClient: Function };
-type $props = $stateProps & $dispatchProps & $ownProps;
-export class ClientsShow extends React.PureComponent<$props> {
+export default class ClientsShow extends React.PureComponent<*> {
   render() {
-    const props = this.props;
     return (
       <div>
-        <Row>
-          <Col>
-            <ClientForm {...props} />
-          </Col>
-          <Col>
-            <ClientRoutinesShowAll clientId={props.id} />
-          </Col>
-        </Row>
+        <Tabs fixed>
+          <Tab label="General">
+            <ClientGeneral {...this.props} />
+          </Tab>
+          <Tab label="Actions">
+            <ClientPrescriptions {...this.props} />
+          </Tab>
+          <Tab label="Tests">
+            <ClientTests {...this.props} />
+          </Tab>
+        </Tabs>
       </div>
     );
   }
 }
-
-const mapDispatchToProps = (dispatch: $$dispatch): $Exact<$dispatchProps> =>
-  bindActionCreators(
-    {
-      updateClient: update
-    },
-    dispatch
-  );
-
-const formik = {
-  mapPropsToValues: props => props.client.toObject(),
-  validateSchema,
-  handleChange: props => {
-    return (key, onChange) => value => {
-      onChange(value);
-      return props.updateClient(props.id, { [key]: value });
-    };
-  }
-};
-
-export default flowRight([
-  connect(null, mapDispatchToProps),
-  getClient,
-  form(formik)
-])(ClientsShow);

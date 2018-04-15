@@ -8,7 +8,7 @@ import { bindActionCreators } from '@client/utils/components';
 import { createStructuredSelector } from 'reselect';
 import * as pagePrescriptionSelectors from '@client/selectors/pages/prescriptions';
 import PrescriptionItem from '../Item';
-
+import Instructions from 'components/general/Instructions';
 type $props = Object;
 
 export class ShowAllPrescriptions extends React.PureComponent<$props> {
@@ -18,9 +18,10 @@ export class ShowAllPrescriptions extends React.PureComponent<$props> {
   render() {
     return (
       <div>
+        <Instructions content="Actions are specific instructions people can follow to improve their health." />
         <UL>
           {this.props.prescriptionIds.map(id => {
-            return <PrescriptionItem key={id} id={id} />;
+            return <PrescriptionItem selectable key={id} id={id} />;
           })}
         </UL>
       </div>

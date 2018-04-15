@@ -5,6 +5,8 @@ import { flowRight } from 'lodash';
 import { createStructuredSelector } from 'reselect';
 import { find } from '@client/selectors/prescriptions';
 import { ULItem, Micon } from 'ui-kit';
+import { bindActionCreators } from 'redux';
+import * as prescriptionActions from '@client/actions/prescriptions';
 
 export class PrescriptionItem extends React.PureComponent<*> {
   handleRemove = () => {
@@ -15,9 +17,14 @@ export class PrescriptionItem extends React.PureComponent<*> {
     props.onRemove(nextValues);
   };
   render() {
-    const { prescription } = this.props;
+    const { prescription, goTo, goToPrescription } = this.props;
+    const baseProps = {};
+    if (goTo) {
+      baseProps.onClick = goToPrescription;
+    }
     return (
       <ULItem
+        {...baseProps}
         caption={prescription.name}
         rightActions={[
           <Micon onClick={this.handleRemove} key="delete" value="delete" />
@@ -31,4 +38,14 @@ const mapStateToProps = createStructuredSelector({
   prescription: find()
 });
 
-export default flowRight([connect(mapStateToProps)])(PrescriptionItem);
+const mapDispatchToProps = (dispatch, props) =>
+  bindActionCreators(
+    {
+      goToPrescription: () => prescriptionActions.goToPrescription(props.id)
+    },
+    dispatch
+  );
+
+export default flowRight([connect(mapStateToProps, mapDispatchToProps)])(
+  PrescriptionItem
+);

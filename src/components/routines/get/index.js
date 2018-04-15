@@ -1,22 +1,22 @@
 // @flow
 
-import khange, { kheck } from 'khange';
 import { connect } from 'react-redux';
 import { createSelector, createStructuredSelector } from 'reselect';
 import { flowRight } from 'lodash';
+import { componentWillMount } from '../../../@client/hocs';
 import { getParam } from '@client/selectors/router';
 import * as routineSelectors from '@client/selectors/routines';
 import * as prescriptionSelectors from '@client/selectors/prescriptions';
-import * as testSelectors from '@client/selectors/tests';
+import * as bodyLevelSelectors from '@client/selectors/bodyLevels';
 import { formParent } from '@client/hocs';
-
-import { get } from '@client/actions/routines';
+import * as homeActions from '@client/actions/pages/homes';
 import { getBatch as getBatchPrescriptions } from '@client/actions/prescriptions';
 import { getBatch as getBatchPrescriptionGroups } from '@client/actions/prescriptionGroups';
 import { getBatch as getBatchTests } from '@client/actions/tests';
+import { findRelated } from '@client/selectors/pages/homes';
 import { bindActionCreators } from '@client/utils/components';
 
-const getRoutineId = getParam('routineId');
+const getRoutineId = findRelated('routine');
 
 const getRoutine = routineSelectors.find(getRoutineId);
 
@@ -24,23 +24,22 @@ const prescriptionIds = routineSelectors.getRelated(
   'prescriptions',
   getRoutineId
 );
-const testIds = createSelector([getRoutine], routine => {
-  return routine.tests.map(t => t.id);
-});
+
+const bodyLevelIds = routineSelectors.getRelated('bodyLevels', getRoutineId);
 
 export const mapStateToProps = createStructuredSelector({
   id: getRoutineId,
   routine: getRoutine,
   prescriptions: prescriptionSelectors.get(prescriptionIds),
-  tests: testSelectors.get(testIds),
-  testIds,
+  bodyLevels: bodyLevelSelectors.get(bodyLevelIds),
+  bodyLevelIds,
   prescriptionIds
 });
 
 export const mapDispatchToProps = (dispatch: $$dispatch) =>
   bindActionCreators(
     {
-      get,
+      get: homeActions.getRoutine,
       getBatchPrescriptions,
       getBatchPrescriptionGroups,
       getBatchTests
@@ -48,16 +47,9 @@ export const mapDispatchToProps = (dispatch: $$dispatch) =>
     dispatch
   );
 
-export const onKhange = (props: Object) => {
-  props.get(props.id).then(routine => {
+export const onComponentWillMount = (props: Object) => {
+  props.get().then(routine => {
     if (routine) {
-      const testIds = routine.tests.map(t => t.id);
-      const prescriptionGroupIds = routine.tests.map(
-        t => t.prescriptionGroupId
-      );
-      props.getBatchPrescriptions(routine.prescriptions);
-      props.getBatchTests(testIds);
-      props.getBatchPrescriptionGroups(prescriptionGroupIds);
       props.reinitializeForm.go();
     }
   });
@@ -66,5 +58,5 @@ export const onKhange = (props: Object) => {
 export default flowRight([
   formParent,
   connect(mapStateToProps, mapDispatchToProps),
-  khange(kheck('id'), onKhange)
+  componentWillMount(onComponentWillMount)
 ]);

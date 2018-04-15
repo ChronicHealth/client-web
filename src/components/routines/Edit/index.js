@@ -17,8 +17,7 @@ export class EditRoutine extends React.PureComponent<$props> {
     const { props } = this;
     return (
       <div>
-        <h1>{props.routine.name}</h1>
-        <RoutineForm fields={this.props.fields} />
+        <RoutineForm fields={props.fields} />
       </div>
     );
   }
@@ -37,11 +36,9 @@ export default flowRight([
   getRoutine,
   connect(null, mapDispatchToProps),
   form({
-    mapPropsToValues: ({ routine }) => ({
-      name: routine.name,
-      description: routine.description,
-      prescriptions: routine.prescriptions.toJS(),
-      tests: routine.tests.toJS()
+    mapPropsToValues: ({ prescriptionIds, bodyLevelIds }) => ({
+      prescriptions: prescriptionIds.toJS(),
+      bodyLevels: bodyLevelIds.toJS()
     }),
     validationSchema,
     handleChange: props => {

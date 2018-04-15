@@ -1,63 +1,59 @@
 // @flow
 import * as React from 'react';
 import { flowRight } from '@client/utils/components';
-import { SelectDropdown, Button } from 'ui-kit';
-import ScopeChip from '../../../scopes/Chip';
-import { removeItemFromArray } from '../../../../@client/utils/components';
+import { Button } from 'ui-kit';
 import styles from './style.pcss';
 import { Row, Col, TextInput } from '../../../../ui-kit';
 import { scopesValidationSchema as validationSchema } from '../../../../@client/utils/prescriptions';
 import { form } from '../../../../@client/hocs';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { scopesJS } from '@client/selectors/scopes';
+import SelectScope from '../../../scopes/Select';
 
 type $stateProps = {};
-type $ownProps = {};
+type $ownProps = {
+  unit: string
+};
 type $dispatchProps = {};
 type $props = $stateProps & $dispatchProps & $ownProps & $$formProps;
 
 export class CreateScope extends React.PureComponent<$props> {
-  renderSelectedScopes = (values: Array<$$id>) => {
-    return (
-      <div>
-        {values.map(id => (
-          <ScopeChip
-            onDeleteClick={() =>
-              this.props.fields.scopes.onChange(removeItemFromArray(id, values))
-            }
-            id={id}
-            key={id}
-          />
-        ))}
-      </div>
-    );
-  };
-
   render() {
     const { ...props } = this.props;
     return (
       <div className={styles.container}>
         <Row>
           <Col xs={4}>
-            <SelectDropdown
+            <SelectScope
+              className={styles.selectScope}
+              placeholder="Default"
+              default
               {...props.fields.scopes}
-              sync
-              renderValues={this.renderSelectedScopes}
-              options={props.scopes}
             />
           </Col>
-          <Col xs={4}>
-            <TextInput
-              {...props.fields.amountRange}
-              label="Amount Ranges (IE. 10-20mg)"
-            />
+          <Col xs={3}>
+            <span>
+              <TextInput
+                className={styles.amountRange}
+                {...props.fields.amountRange}
+                label="Amount Ranges (ie. 10-20)"
+              />
+              {props.unit || 'unit'}
+            </span>
           </Col>
-          <Col xs={4}>
+          <Col xs={5}>
             <TextInput
               {...props.fields.amountTime}
-              label="Frequency (IE. per day)"
+              className={styles.times}
+              label="Times (ie. 3-5 times)"
             />
+            <span className={styles.timesPer} s>
+              x per
+            </span>
+            <TextInput
+              {...props.fields.amountFrequency}
+              className={styles.times}
+              label="Frequency in days"
+            />
+            <span>days</span>
           </Col>
         </Row>
         <Button
@@ -71,22 +67,18 @@ export class CreateScope extends React.PureComponent<$props> {
   }
 }
 
-const mapStateToProps = createStructuredSelector({
-  scopes: scopesJS
-});
-
 export default flowRight([
   form({
     mapPropsToValues: () => ({
       scopes: [],
       amountTime: '',
-      amountRange: ''
+      amountRange: '',
+      amountFrequency: ''
     }),
     validationSchema,
     handleSubmit: (values, { props }) => {
       props.toggleCreateScope();
       return props.onChange(props.value.concat(values));
     }
-  }),
-  connect(mapStateToProps, null)
+  })
 ])(CreateScope);

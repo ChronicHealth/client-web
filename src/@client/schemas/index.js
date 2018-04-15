@@ -11,6 +11,11 @@ import clientRoutines from './clientRoutines';
 import prescriptionGroups from './prescriptionGroups';
 import scopes from './scopes';
 import bodyLevels from './bodyLevels';
+import prescriptionResults from './prescriptionResults';
+import prescriptionResultsRanges from './prescriptionResultsRanges';
+import testResults from './testResults';
+import testResultRanges from './testResultRanges';
+import effects from './effects';
 
 const schema = {
   users,
@@ -23,7 +28,12 @@ const schema = {
   clientRoutines,
   prescriptionGroups,
   scopes,
-  bodyLevels
+  bodyLevels,
+  prescriptionResults,
+  prescriptionResultsRanges,
+  testResultRanges,
+  testResults,
+  effects
 };
 validateSchema(schema);
 
