@@ -28,11 +28,14 @@ export class Layout extends React.Component<$props> {
     return (
       <div>
         <AppBar
-          onLeftIconClick={this.props.goHome}
-          title="Kronic"
-          leftIcon="menu"
+          className={styles.appbar}
+          title={
+            <span className={styles.title} onClick={this.props.goHome}>
+              Kronic
+            </span>
+          }
         >
-          <Navigation type="horizontal">
+          <Navigation className={styles.rightIcon} type="horizontal">
             <Nav />
           </Navigation>
         </AppBar>
